@@ -22,6 +22,11 @@ body{
     border-left: 1px #aaa solid;
     display: inline-block;
 }
+/*有完整数据体系后应该隐藏*/
+.temp-input input{
+    display: block;
+    height: calc(50% - 6px);
+}
 .info-grid{
     display: inline-block;
     border-right: 1px #aaa solid;
@@ -53,8 +58,13 @@ body{
     width: 800px;
     height: 640px;
     padding: 10px;
-    border-left: 7px #169ace solid;
+    /*border-left: 7px #169ace solid;
     border-right: 16px #169ace solid;
+    border-bottom: 1px #169ace solid;*/
+    border-style: solid;
+    border-color: #169ace;
+    border-width: 1px 16px 1px 7px;
+    margin: 5px;
 }
 .battle-log .title{
     margin-bottom: 10px;

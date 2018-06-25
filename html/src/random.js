@@ -9,7 +9,7 @@ BkRand.GetOrder = function(){
 }
 //行动类型乱数
 BkRand.OperationCode = {
-    seed:39
+    seed:55
 };
 BkRand.OperationCodeIndex = 0;
 BkRand.GetOperation = function(){
@@ -17,7 +17,7 @@ BkRand.GetOperation = function(){
 }
 //成败判定乱数
 BkRand.TechniqueCode = {
-    seed:39
+    seed:77
 };
 BkRand.TechniqueCodeIndex = 0;
 BkRand.GetTechnique = function(){
@@ -25,7 +25,7 @@ BkRand.GetTechnique = function(){
 }
 //行动力度 乱数
 BkRand.IntensityCode = {
-    seed:39
+    seed:66
 };
 BkRand.IntensityCodeIndex = 0;
 BkRand.GetIntensity = function(){
