@@ -4,5 +4,8 @@
 }
 .battle-log .p2.name{
     font-weight: bold;
-    color: #005fcd
+    color: #005fcd;
+}
+.battle-log .damage.number{
+    color: #f00;
 }

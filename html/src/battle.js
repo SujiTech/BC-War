@@ -40,5 +40,8 @@ var eActionType = {
 	Max : 1,
 };
 Battle.ActionPunch = function(player,opponent){
-	opponent.OnDamage(player.atk);
+	var dam = player.atk;
+	opponent.OnDamage(dam);
+	new ToDisplay(player, opponent, eDisplayType.Punch);
+    new ToDisplay(player, opponent, eDisplayType.Damage, dam);
 }

@@ -51,10 +51,11 @@ Hero.prototype.readAttri = function() {
 Hero.prototype.id = 0;
 Hero.prototype.OnDamage = function(dam){
     this.hp -= dam;
-    if(this.hp < 0)
+    if(this.hp < 0){
         this.hp = 0;
+    }
     console.log(this.name + "收到伤害" + dam + "点");
 }
-Hero.prototype.getName(){
-    return Display.ToP(this.name, "p"+this.position+" name");
+Hero.prototype.getName = function(){
+    return Display.ToSpan(this.name, "p"+this.data.position+" name");
 }
