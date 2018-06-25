@@ -3,7 +3,12 @@ function init(){
     // $(".hero-target").html("对手");
     // $( "p:last" ).html("你妹");
     $("#btn-challenge").click(Fight);
-
+    for (var i = 0; i < 10; i++) {
+        console.log("Order-"+i+":"+BkRand.GetOrder());
+        console.log("Operation-"+i+":"+BkRand.GetOperation());
+        console.log("Technique-"+i+":"+BkRand.GetTechnique());
+        console.log("Intensity-"+i+":"+BkRand.GetIntensity());
+    }
 }
 
 var Fight = function(){
@@ -13,4 +18,5 @@ var Fight = function(){
         str += str;
     }
     $(".battle-log .content").html(str);
+    
 }
