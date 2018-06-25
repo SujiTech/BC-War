@@ -8,6 +8,7 @@ function init(){
     // console.log(arr[10]);
     // console.log(arr.length);
     $("#btn-challenge").click(Fight);
+    ToDisplay.prototype.div = $(".battle-log .content");
 }
 var gl = {
     p1 : null,
@@ -37,6 +38,8 @@ var Fight = function(){
     resetRunData(); //TODO 正式版的调用时间应该在初始化完成后
 
     fight_loop();
+
+
 }
 
 function fight_loop(){
@@ -63,4 +66,8 @@ function fight_loop(){
             break;
         }
     }
+}
+
+function display_loop(){
+
 }

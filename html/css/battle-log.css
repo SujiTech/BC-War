@@ -1,0 +1,8 @@
+.battle-log .p1.name{
+    font-weight: bold;
+    color: #ff8800;
+}
+.battle-log .p2.name{
+    font-weight: bold;
+    color: #005fcd
+}
