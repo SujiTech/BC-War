@@ -73,15 +73,27 @@ body{
 .interface{
     margin-left: auto;
     margin-right: auto;
-    width: 800px;
-    height: 300px;
+    /*width: 800px;
+    height: 300px;*/
 }
 .steins-group{
-    border-top: 1px #aaa solid;
+    /*border-top: 1px #aaa solid;
     border-bottom: 1px #aaa solid;
-    border-left: 1px #aaa solid;
-    display: inline-block;
+    border-left: 1px #aaa solid;*/
+    text-align: center;
+    display: block;
 }
-#challenge{
+.player-info{
     display: inline-block;
+    border-right: 1PX #AAA solid;
+    margin-right: 5px;
+    padding-right: 5px;
+}
+.player-info .title{
+    font-weight: bold;
+}
+.interface button{
+    display: inline-block;
+    width: 200px;
+    height: 45px;
 }
