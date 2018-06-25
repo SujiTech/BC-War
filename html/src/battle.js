@@ -16,6 +16,29 @@ Battle.generateActionList = function(){
 
 	return p1time<=p2time;
 }
-Battle.generateActionTime = function(player,arr,index){
+Battle.generateActionTime = function(player, arr, index){
 	return (arr[index-1]||0) + player.spd + BkRand.GetOrder();
+}
+
+Battle.generateAction = function(player, opponent){
+	this.analyzeAction(player,opponent, BkRand.GetOperation());
+}
+Battle.analyzeAction = function(player, opponent, action_type){
+	var action;
+	switch(action_type){
+		case eActionType.Punch:
+			action = this.ActionPunch;
+		break;
+		default:
+			action = this.ActionPunch;
+		break;
+	}
+	action(player,opponent);
+}
+var eActionType = {
+	Punch : 0,
+	Max : 1,
+};
+Battle.ActionPunch = function(player,opponent){
+	opponent.OnDamage(player.atk);
 }

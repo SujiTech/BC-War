@@ -46,6 +46,12 @@ Hero.prototype.readAttri = function() {
     $(".luk ."+target_tag).html("<p>"+this.luk+'</p>');
     $(".spd ."+target_tag).html("<p>"+this.spd+'</p>');
     $(".skl ."+target_tag).html("<p>"+this.skl+'</p>');
-};
+}
 //静态成员变量
 Hero.prototype.id = 0;
+Hero.prototype.OnDamage = function(dam){
+    this.hp -= dam;
+    if(this.hp < 0)
+        this.hp = 0;
+    console.log(this.name + "收到伤害" + dam + "点");
+}

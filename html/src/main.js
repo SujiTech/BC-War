@@ -36,42 +36,31 @@ var Fight = function(){
     gl.p2 = new Hero($("#name-player2").val(),2);
     resetRunData(); //TODO 正式版的调用时间应该在初始化完成后
 
-
-    var res = Battle.generateActionList();
-    console.log(res);
-    console.log(rundata.p1_action_list[rundata.p1_now_action_index]);
-    console.log(rundata.p2_action_list[rundata.p2_now_action_index]);
-    if(res)
-        rundata.p1_now_action_index++;
-    else 
-        rundata.p2_now_action_index++;
-    res = Battle.generateActionList();
-    console.log(res);
-    console.log(rundata.p1_action_list[rundata.p1_now_action_index]);
-    console.log(rundata.p2_action_list[rundata.p2_now_action_index]);
-    if(res)
-        rundata.p1_now_action_index++;
-    else 
-        rundata.p2_now_action_index++;
-    res = Battle.generateActionList();
-    console.log(res);
-    console.log(rundata.p1_action_list[rundata.p1_now_action_index]);
-    console.log(rundata.p2_action_list[rundata.p2_now_action_index]);
-    if(res)
-        rundata.p1_now_action_index++;
-    else 
-        rundata.p2_now_action_index++;
-    res = Battle.generateActionList();
-    console.log(res);
-    console.log(rundata.p1_action_list[rundata.p1_now_action_index]);
-    console.log(rundata.p2_action_list[rundata.p2_now_action_index]);
-    if(res)
-        rundata.p1_now_action_index++;
-    else 
-        rundata.p2_now_action_index++;
-
-    console.log(res);
-    console.log(rundata.p1_action_list[rundata.p1_now_action_index]);
-    console.log(rundata.p2_action_list[rundata.p2_now_action_index]);
+    fight_loop();
 }
 
+function fight_loop(){
+    var res,action_type,success_rate;
+    var acitve,passive;
+    while(true){
+        res = Battle.generateActionList();
+        if(res){
+            rundata.p1_now_action_index++;
+            acitve = gl.p1;
+            passive = gl.p2;
+        }
+        else {
+            rundata.p2_now_action_index++;
+            acitve = gl.p2;
+            passive = gl.p1;
+        }
+        Battle.generateAction(acitve, passive);
+        if(gl.p1.hp==0){
+            console.log("p2获胜")
+            break;
+        }else if(gl.p2.hp==0){
+            console.log("p1获胜")
+            break;
+        }
+    }
+}

@@ -13,7 +13,7 @@ BkRand.OperationCode = {
 };
 BkRand.OperationCodeIndex = 0;
 BkRand.GetOperation = function(){
-    return this.seededRandom(this.OperationCode);
+    return Math.floor(this.seededRandom(this.OperationCode,eActionType.Max));
 }
 //成败判定乱数
 BkRand.TechniqueCode = {
