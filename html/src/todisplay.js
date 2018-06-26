@@ -12,7 +12,42 @@ function ToDisplay(source, opponent, display_type, number, hpafter, isCombo, del
 	this.delay = delay||1000;
 	this.id = this.count++;
 	this.pre = rundata.display_list[rundata.display_list.length-1];
+	this.next_need_newline = false;
 
+	//是否需要新行
+	switch(this.type){
+	case eDisplayType.Dodge:
+	case eDisplayType.Defend:
+	case eDisplayType.Counter:
+	case eDisplayType.CriticalHit:
+	case eDisplayType.Punch:
+		break;
+	case eDisplayType.PunchCombo:
+	case eDisplayType.Dead:
+	case eDisplayType.Damage:
+	case eDisplayType.Win:
+		this.next_need_newline = true;
+	default:
+		break;
+	}
+	//是否需要缩进
+	this.need_intend = false;
+	switch(this.type){
+	case eDisplayType.Damage:
+	case eDisplayType.Dead:
+	case eDisplayType.Defend:
+	case eDisplayType.Dodge:
+	case eDisplayType.Counter:
+	case eDisplayType.CriticalHit:
+		if(this.pre!=null && this.isCombo && this.pre.isCombo)
+			this.need_intend = true;
+		break;
+	case eDisplayType.Punch:
+	case eDisplayType.PunchCombo:
+	case eDisplayType.Win:
+	default:
+		break;
+	}
 	rundata.display_list[rundata.display_list.length] = this;
 }
 //静态成员变量
@@ -116,30 +151,8 @@ ToDisplay.prototype.PunchCombo = function(){
 ToDisplay.prototype.NeedNewLine = function(isREC){
 	//直接新建<p>
 	//其他函数统统往LstP()加
-	var need = false;
-	if(this.pre==null)
-		need = true;
-	else if(this.pre.type == eDisplayType.PunchCombo
-		|| this.pre.type == eDisplayType.Damage
-		){
-		need = true;
-	}else if(this.pre.type == eDisplayType.Punch
-		|| this.pre.type == eDisplayType.Defend
-		|| this.pre.type == eDisplayType.Dodge
-		|| this.pre.type == eDisplayType.Counter
-		|| this.pre.type == eDisplayType.CriticalHit
-		){
-		need = false;
-	}else{
-		need = this.pre.NeedNewLine(isREC);
-	}
-	if(isREC)
-		return need;
-	else if(need){
-		var need_intend = false;
-		if(this.pre!=null && this.isCombo && this.pre.isCombo)
-			need_intend = true;
-		Display.Div.append(Display.ToP("",need_intend?"combo":""));
+	if(this.pre == null || this.pre.next_need_newline){
+		Display.Div.append(Display.ToP("",this.need_intend?"combo":""));
 	}
 }
 //战斗报告全局信息
