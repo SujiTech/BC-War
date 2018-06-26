@@ -38,6 +38,9 @@ ToDisplay.prototype.display = function(){
 		case eDisplayType.Counter:
 			this.Counter();
 			break;
+		case eDisplayType.CriticalHit:
+			this.CriticalHit();
+			break;
 		default:
 			console.log("DisplayType丢失")
 			break;
@@ -81,13 +84,18 @@ ToDisplay.prototype.Defend = function(){
 }
 ToDisplay.prototype.Dodge = function(){
 	var str = this.source.getName();
-	str +=  Display.RS("躲开了攻击","没有被打中","发动闪避")+"，";
+	str +=  Display.RS("躲开了攻击","没有被打中","发动闪避");
 	Display.LastP().append(Display.ToSpan(str));
 }
 ToDisplay.prototype.Counter = function(){
 	var str = this.source.getName();
 	str +=  Display.RS("抓住机会进行了反击","找到了破绽反手一拳")+"，";
 	Display.LastP().append(Display.ToSpan(str));
+}
+ToDisplay.prototype.CriticalHit = function(){
+	var name = this.source.getName();
+	var str =  Display.RS("命中要害","致命一击","效果拔群","会心一击");
+	Display.LastP().append(Display.ToSpan(str,"critical-hit") + Display.ToSpan("！"));
 }
 //战斗报告全局信息
 Display = {};
@@ -132,5 +140,6 @@ eDisplayType = {
 	Defend : 4,
 	Dodge : 5,
 	Counter : 6,
-	Max : 7,
+	CriticalHit : 7,
+	Max : 8,
 }

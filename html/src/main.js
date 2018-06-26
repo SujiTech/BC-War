@@ -19,6 +19,7 @@ var gl = {
     p2_now_action_index : 0,
     display_index : 0,
     display_list : [],
+    display_looping : false,
 }
 var rundata = {};
 var resetRunData = function(){
@@ -41,9 +42,12 @@ var Fight = function(){
     gl.p1 = new Hero($("#name-player1").val(),"hero-me");
     gl.p2 = new Hero($("#name-player2").val(),"hero-target");
     resetRunData(); //TODO 正式版的调用时间应该在初始化完成后
-
+    
     fight_loop();
-    display_loop();
+    if(!gl.display_looping){
+        gl.display_looping = true;
+        display_loop();
+    }
 
 }
 

@@ -4,32 +4,32 @@ BkRand.OrderCode = {
     seed:39
 };
 BkRand.OrderCodeIndex = 0;
-BkRand.GetOrder = function(){
-    return this.seededRandom(this.OrderCode);
+BkRand.GetOrder = function(max){
+    return this.seededRandom(this.OrderCode,max);
 }
 //行动类型乱数
 BkRand.OperationCode = {
     seed:55
 };
 BkRand.OperationCodeIndex = 0;
-BkRand.GetOperation = function(){
-    return this.seededRandom(this.OperationCode);
+BkRand.GetOperation = function(max){
+    return this.seededRandom(this.OperationCode,max);
 }
 //成败判定乱数
 BkRand.TechniqueCode = {
     seed:77
 };
 BkRand.TechniqueCodeIndex = 0;
-BkRand.GetTechnique = function(){
-    return this.seededRandom(this.TechniqueCode);
+BkRand.GetTechnique = function(max){
+    return this.seededRandom(this.TechniqueCode,max);
 }
 //行动力度 乱数
 BkRand.IntensityCode = {
     seed:66
 };
 BkRand.IntensityCodeIndex = 0;
-BkRand.GetIntensity = function(){
-return this.seededRandom(this.IntensityCode);
+BkRand.GetIntensity = function(max){
+return this.seededRandom(this.IntensityCode,max);
 }
 
 

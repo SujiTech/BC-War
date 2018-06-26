@@ -1,14 +1,19 @@
-.battle-log .hero-me.name{
-    font-weight: bold;
-    color: #ff8800;
+.battle-log .name{
+    /*font-weight: bold;*/
+    /*color: #ff8800;*/
+    background-color: #f0f0f0;
+    padding: 1px;
 }
-.battle-log .hero-target.name{
+/*.battle-log .hero-target.name{
     font-weight: bold;
     color: #005fcd;
-}
+}*/
 .battle-log .damage.number{
     color: #f00;
 }
 .battle-log .log-item{
     padding-bottom: 2px;
+}
+.battle-log .critical-hit{
+    color: #bf9e43;
 }

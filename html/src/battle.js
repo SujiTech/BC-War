@@ -33,7 +33,7 @@ Battle.analyzeAction = function(player, opponent, action_type){
 			action = this.ActionPunch;
 		break;
 	}
-	action(player,opponent);
+	action.call(this,player,opponent);
 }
 var eActionType = {
 	Punch : 0,
@@ -49,6 +49,14 @@ var eReactionType = {
 Battle.ActionPunch = function(player,opponent){
 	new ToDisplay(player, opponent, eDisplayType.Punch);
 	var dam = player.atk * (0.5 + BkRand.GetIntensity());
+	//暴击判断
+	var cri = BkRand.GetTechnique(100);
+	cri *= player.skl / opponent.skl;
+	if(cri > this.CriticalHitRate){
+		dam *= 2;
+		new ToDisplay(player, opponent, eDisplayType.CriticalHit, dam, opponent.hp);
+	}
+
 	dam = Math.floor(dam);
 	//反击判断
 	var react = Battle.PunchReact(opponent,player);
@@ -99,3 +107,5 @@ Battle.PunchReact = function(player,opponent){
 
 	return ram;
 }
+
+Battle.CriticalHitRate = 70;//基础暴击率 30%
