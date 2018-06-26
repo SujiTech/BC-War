@@ -41,6 +41,9 @@ ToDisplay.prototype.display = function(){
 		case eDisplayType.CriticalHit:
 			this.CriticalHit();
 			break;
+		case eDisplayType.PunchCombo:
+			this.PunchCombo();
+			break;
 		default:
 			console.log("DisplayType丢失")
 			break;
@@ -97,6 +100,11 @@ ToDisplay.prototype.CriticalHit = function(){
 	var str =  Display.RS("命中要害","致命一击","效果拔群","会心一击");
 	Display.LastP().append(Display.ToSpan(str,"critical-hit") + Display.ToSpan("！"));
 }
+ToDisplay.prototype.PunchCombo = function(){
+	var name = this.source.getName();
+	var str =  Display.RS("打了一套组合拳","把"+this.opponent.getName()+"按在地上一顿乱打");
+	Display.LastP().append(Display.ToP(str));
+}
 //战斗报告全局信息
 Display = {};
 Display.Div = null;
@@ -141,5 +149,6 @@ eDisplayType = {
 	Dodge : 5,
 	Counter : 6,
 	CriticalHit : 7,
-	Max : 8,
+	PunchCombo: 8,
+	Max : 9,
 }

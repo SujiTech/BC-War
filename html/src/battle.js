@@ -29,6 +29,9 @@ Battle.analyzeAction = function(player, opponent, action_type){
 		case eActionType.Punch:
 			action = this.ActionPunch;
 		break;
+		case eActionType.PunchCombo:
+			action = this.ActionPunchCombo;
+		break;
 		default:
 			action = this.ActionPunch;
 		break;
@@ -37,7 +40,8 @@ Battle.analyzeAction = function(player, opponent, action_type){
 }
 var eActionType = {
 	Punch : 0,
-	Max : 1,
+	PunchCombo : 1,
+	Max : 2,
 };
 var eReactionType = {
 	None : 0,
@@ -49,6 +53,24 @@ var eReactionType = {
 Battle.ActionPunch = function(player,opponent){
 	new ToDisplay(player, opponent, eDisplayType.Punch);
 	var dam = player.atk * (0.5 + BkRand.GetIntensity());
+	this.NormalAttack(player, opponent, dam);
+}
+//组合拳 少说打3下，后续最多再3下
+Battle.ActionPunchCombo = function(player, opponent){
+	new ToDisplay(player, opponent, eDisplayType.PunchCombo);
+	var remain_qi = 600;
+	var is_continue = true;
+	while(remain_qi>0){
+		is_continue = this.NormalAttack(
+			player,
+			opponent, 
+			0.5 * player.atk * (0.5 + BkRand.GetIntensity())
+			);
+		if(!is_continue)break;
+		remain_qi -= 100 + BkRand.GetTechnique(100)*(opponent.skl/player.skl);
+	}
+}
+Battle.NormalAttack = function(player, opponent, dam){
 	//暴击判断
 	var cri = BkRand.GetTechnique(100);
 	cri *= player.skl / opponent.skl;
@@ -56,7 +78,6 @@ Battle.ActionPunch = function(player,opponent){
 		dam *= 2;
 		new ToDisplay(player, opponent, eDisplayType.CriticalHit, dam, opponent.hp);
 	}
-
 	dam = Math.floor(dam);
 	//反击判断
 	var react = Battle.PunchReact(opponent,player);
@@ -80,9 +101,10 @@ Battle.ActionPunch = function(player,opponent){
 		dam = Math.floor(dam);
 		opponent.OnDamage(dam);
 	    new ToDisplay(player, opponent, eDisplayType.Damage, dam, opponent.hp);
+	    return true;
 	}
+	return false;
 }
-
 Battle.PunchReact = function(player,opponent){
 	//正中，防御，闪避，反击
 	var ram = BkRand.GetOperation()*100 * (player.skl/opponent.skl);
