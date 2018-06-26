@@ -16,12 +16,12 @@ function ToDisplay(source, opponent, display_type, number, hpafter, isCombo, del
 
 	//是否需要新行
 	switch(this.type){
-	case eDisplayType.Dodge:
 	case eDisplayType.Defend:
 	case eDisplayType.Counter:
 	case eDisplayType.CriticalHit:
 	case eDisplayType.Punch:
 		break;
+	case eDisplayType.Dodge:
 	case eDisplayType.PunchCombo:
 	case eDisplayType.Dead:
 	case eDisplayType.Damage:

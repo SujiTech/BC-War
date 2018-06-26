@@ -74,8 +74,8 @@ Battle.ActionPunchCombo = function(player, opponent){
 Battle.NormalAttack = function(player, opponent, dam, isCombo){
 	//暴击判断
 	var cri = BkRand.GetTechnique(100);
-	cri *= player.skl / opponent.skl;
-	if(cri > this.CriticalHitRate){
+	
+	if(cri > this.CriticalHitRate - 20 * (player.luk / opponent.luk - 1)){
 		dam *= 2;
 		new ToDisplay(player, opponent, eDisplayType.CriticalHit, dam, opponent.hp, isCombo);
 	}
