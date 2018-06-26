@@ -37,6 +37,7 @@ var Fight = function(){
     // $(".battle-log .content").html(str);
     // console.log($("#name-player1").val());
     // console.log($("#name-player2").val());
+    Display.Div.html("");
     gl.p1 = new Hero($("#name-player1").val(),1);
     gl.p2 = new Hero($("#name-player2").val(),2);
     resetRunData(); //TODO 正式版的调用时间应该在初始化完成后

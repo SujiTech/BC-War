@@ -37,7 +37,7 @@ ToDisplay.prototype.display = function(){
 }
 ToDisplay.prototype.Punch = function() {
 	var str = this.source.getName();
-	str +=  "挥出一拳，";
+	str +=  Display.RS("挥出一拳","挥出摆拳","踢出一脚侧踹","使用正蹬")+"，";
 
 	Display.Div.append(Display.ToP(str));
 }
@@ -50,7 +50,7 @@ ToDisplay.prototype.Damage = function() {
 }
 ToDisplay.prototype.Dead = function() {
 	var str = this.source.getName();
-	str +=  "倒下了，";
+	str +=  Display.RS("倒下了","再起不能","举手投降","被打下了擂台","已经不能继续战斗了")+"，";
 
 	Display.Div.append(Display.ToP(str));
 }
@@ -75,7 +75,11 @@ Display.ToSpan = function(str, cls){
 Display.ToP = function(str, cls){
 	return "<p class=\""+ (cls||"") + "\">" + str + "</p>";
 }
-
+//RandomString
+Display.RS = function()
+{
+    return arguments[Math.round(Math.random()*arguments.length)];
+}
 eDisplayType = {
 	Punch : 0,
 	Damage : 1,
