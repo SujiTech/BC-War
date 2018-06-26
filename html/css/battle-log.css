@@ -17,3 +17,6 @@
 .battle-log .critical-hit{
     color: #bf9e43;
 }
+.battle-log .combo{
+    text-indent:20px;
+}

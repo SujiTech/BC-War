@@ -57,7 +57,7 @@ Battle.ActionPunch = function(player,opponent){
 }
 //组合拳 少说打3下，后续最多再3下
 Battle.ActionPunchCombo = function(player, opponent){
-	new ToDisplay(player, opponent, eDisplayType.PunchCombo);
+	new ToDisplay(player, opponent, eDisplayType.PunchCombo, null, null, true);
 	var remain_qi = 600;
 	var is_continue = true;
 	while(remain_qi>0){
@@ -81,7 +81,7 @@ Battle.NormalAttack = function(player, opponent, dam, isCombo){
 	}
 	dam = Math.floor(dam);
 	//反击判断
-	var react = Battle.PunchReact(opponent,player);
+	var react = Battle.PunchReact(opponent,player,isCombo);
 	switch(react){
 		case eReactionType.None:
 			dam -= 0.1 * opponent.def;
@@ -91,22 +91,21 @@ Battle.NormalAttack = function(player, opponent, dam, isCombo){
 			break;
 		case eReactionType.Dodge:
 			dam = 0;
-			break;
+			return false;
 		case eReactionType.Counter:
 			dam = 0;
-			break;
+			return false;
 		default:
 			break;
 	}
-	if(dam>0){
-		dam = Math.floor(dam);
-		opponent.OnDamage(dam);
-	    new ToDisplay(player, opponent, eDisplayType.Damage, dam, opponent.hp, isCombo);
-	    return true;
-	}
-	return false;
+	if(dam<0)
+		dam = 0;
+	dam = Math.floor(dam);
+	opponent.OnDamage(dam);
+    new ToDisplay(player, opponent, eDisplayType.Damage, dam, opponent.hp, isCombo);
+    return true;
 }
-Battle.PunchReact = function(player,opponent){
+Battle.PunchReact = function(player,opponent,isCombo){
 	//正中，防御，闪避，反击
 	var ram = BkRand.GetOperation()*100 * (player.skl/opponent.skl);
 	//技巧使后几种操作概率提升
@@ -114,18 +113,18 @@ Battle.PunchReact = function(player,opponent){
 		ram = eReactionType.None;
 	}else if(ram < 75){
 		ram = eReactionType.Defend;
-		new ToDisplay(player, opponent, eDisplayType.Defend, dam);
+		new ToDisplay(player, opponent, eDisplayType.Defend, dam, null, isCombo);
 	}else if(ram < 95){
 		ram = eReactionType.Dodge;
-		new ToDisplay(player, opponent, eDisplayType.Dodge, dam);
+		new ToDisplay(player, opponent, eDisplayType.Dodge, dam, null, isCombo);
 	}else{
 		//反击
 		ram = eReactionType.Counter;
 		var dam = player.atk * (0.5 + BkRand.GetIntensity());
 		dam = Math.floor(dam);
 		opponent.OnDamage(dam);
-		new ToDisplay(player, opponent, eDisplayType.Counter, dam);
-		new ToDisplay(player, opponent, eDisplayType.Damage, dam, opponent.hp);
+		new ToDisplay(player, opponent, eDisplayType.Counter, dam , null, isCombo);
+		new ToDisplay(player, opponent, eDisplayType.Damage, dam, opponent.hp, isCombo);
 	}
 
 	return ram;
