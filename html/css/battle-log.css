@@ -1,8 +1,8 @@
-.battle-log .p1.name{
+.battle-log .hero-me.name{
     font-weight: bold;
     color: #ff8800;
 }
-.battle-log .p2.name{
+.battle-log .hero-target.name{
     font-weight: bold;
     color: #005fcd;
 }

@@ -71,7 +71,7 @@ Battle.ActionPunch = function(player,opponent){
 	if(dam>0){
 		dam = Math.floor(dam);
 		opponent.OnDamage(dam);
-	    new ToDisplay(player, opponent, eDisplayType.Damage, dam);
+	    new ToDisplay(player, opponent, eDisplayType.Damage, dam, opponent.hp);
 	}
 }
 
@@ -94,7 +94,7 @@ Battle.PunchReact = function(player,opponent){
 		dam = Math.floor(dam);
 		opponent.OnDamage(dam);
 		new ToDisplay(player, opponent, eDisplayType.Counter, dam);
-		new ToDisplay(player, opponent, eDisplayType.Damage, dam);
+		new ToDisplay(player, opponent, eDisplayType.Damage, dam, opponent.hp);
 	}
 
 	return ram;

@@ -38,8 +38,8 @@ var Fight = function(){
     // console.log($("#name-player1").val());
     // console.log($("#name-player2").val());
     Display.Div.html("");
-    gl.p1 = new Hero($("#name-player1").val(),1);
-    gl.p2 = new Hero($("#name-player2").val(),2);
+    gl.p1 = new Hero($("#name-player1").val(),"hero-me");
+    gl.p2 = new Hero($("#name-player2").val(),"hero-target");
     resetRunData(); //TODO 正式版的调用时间应该在初始化完成后
 
     fight_loop();

@@ -2,10 +2,11 @@
 	
 	delay 可选，一般情况下由表现函数直接填写
  */
-function ToDisplay(source, opponent, display_type, number, delay){
+function ToDisplay(source, opponent, display_type, number, hpafter, delay){
 	this.source = source;
 	this.opponent = opponent;
 	this.number = number;
+	this.hpafter = hpafter;
 	this.type = display_type;
 	this.delay = delay||1000;
 	this.id = this.count++;
@@ -54,7 +55,11 @@ ToDisplay.prototype.Damage = function() {
 	var str = this.opponent.getName() + "受到";
 	str +=  Display.ToSpan(this.number,"damage number");
 	str += "点伤害";
-
+	$(".hp .content."+this.opponent.data.tag).html("<p>"+this.hpafter+'</p>');
+	//血条变化
+	// Display.HPBar(this.opponent.data.tag+" .back", this.hpafter, this.opponent.data.hp, 2000)
+	// Display.HPBar(this.opponent.data.tag+" .front", this.hpafter, this.opponent.data.hp, 250)
+	Display.HPBarQ(this.opponent.data.tag, this.hpafter, this.opponent.data.hp);
 	Display.LastP().append(Display.ToSpan(str));
 }
 ToDisplay.prototype.Dead = function() {
@@ -103,6 +108,21 @@ Display.ToP = function(str, cls){
 Display.RS = function()
 {
     return arguments[Math.floor(Math.random()*arguments.length)];
+}
+Display.HPBar = function(tag, number, maxhp, duration){
+	var hpwidth = number/maxhp * 100;
+	$(".hpbar."+tag).animate({
+		width:hpwidth
+	},duration);
+}
+Display.HPBarQ = function(tag, hp, maxhp){
+	var hpwidth = hp/maxhp * 100;
+	$(".hpbar."+tag+" .back").animate({
+		width:hpwidth
+	},1000);
+	$(".hpbar."+tag+" .front").animate({
+		width:hpwidth
+	},250);
 }
 eDisplayType = {
 	Punch : 0,

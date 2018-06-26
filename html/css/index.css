@@ -26,6 +26,7 @@ body{
 .temp-input input{
     display: block;
     height: calc(50% - 6px);
+    width: 96px;
 }
 .info-grid{
     display: inline-block;
@@ -34,6 +35,7 @@ body{
     vertical-align: middle;
     text-align: center;
     height: 100%;
+    width: 100px;
 }
 /*.info-grid>.item-name{
     border-top: 1px #aaa solid;
@@ -48,7 +50,29 @@ body{
     font-weight: bold;
     margin: 10px;
 }
-
+.hpbar{
+    position: absolute;
+    margin-top:-5px;
+    height: 5px;
+    width: 100px;
+    background-color: #aaa;
+    /*border-top: 1px #aaa solid;
+    border-bottom: 1px #aaa solid;*/
+}
+.hpbar div{
+    position: absolute;
+    height: inherit;
+    width: inherit;    
+}
+.hpbar .back{
+    background-color: #f00;
+}
+.hpbar .front{
+    background-color: #0f0;
+}
+.hpbar.hero-target{
+    margin-top: 0;
+}
 
 
 .middleblock{
