@@ -9,6 +9,10 @@ function init(){
     // console.log(arr.length);
     $("#btn-challenge").click(Fight);
     Display.Div = $(".battle-log .content");
+
+
+    //调试
+    $("#btn-speedup").click(display_loop);
 }
 var gl = {
     p1 : null,
