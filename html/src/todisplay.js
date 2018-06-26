@@ -2,11 +2,12 @@
 	
 	delay 可选，一般情况下由表现函数直接填写
  */
-function ToDisplay(source, opponent, display_type, number, hpafter, delay){
+function ToDisplay(source, opponent, display_type, number, hpafter, isCombo, delay){
 	this.source = source;
 	this.opponent = opponent;
 	this.number = number;
 	this.hpafter = hpafter;
+	this.isCombo = isCombo;
 	this.type = display_type;
 	this.delay = delay||1000;
 	this.id = this.count++;
@@ -66,7 +67,10 @@ ToDisplay.prototype.Damage = function() {
 	// Display.HPBar(this.opponent.data.tag+" .back", this.hpafter, this.opponent.data.hp, 2000)
 	// Display.HPBar(this.opponent.data.tag+" .front", this.hpafter, this.opponent.data.hp, 250)
 	Display.HPBarQ(this.opponent.data.tag, this.hpafter, this.opponent.data.hp);
-	Display.LastP().append(Display.ToSpan(str));
+	if(this.isCombo)
+		Display.Div.append(Display.ToP(str));
+	else
+		Display.LastP().append(Display.ToSpan(str));
 }
 ToDisplay.prototype.Dead = function() {
 	var str = this.source.getName();
@@ -83,26 +87,38 @@ ToDisplay.prototype.Win = function() {
 ToDisplay.prototype.Defend = function(){
 	var str = this.source.getName();
 	str +=  Display.RS("发动了防御","格挡攻击")+"，";
-	Display.LastP().append(Display.ToSpan(str));
+	if(this.isCombo)
+		Display.Div.append(Display.ToP(str));
+	else
+		Display.LastP().append(Display.ToSpan(str));
 }
 ToDisplay.prototype.Dodge = function(){
 	var str = this.source.getName();
 	str +=  Display.RS("躲开了攻击","没有被打中","发动闪避");
-	Display.LastP().append(Display.ToSpan(str));
+	if(this.isCombo)
+		Display.Div.append(Display.ToP(str));
+	else
+		Display.LastP().append(Display.ToSpan(str));
 }
 ToDisplay.prototype.Counter = function(){
 	var str = this.source.getName();
 	str +=  Display.RS("抓住机会进行了反击","找到了破绽反手一拳")+"，";
-	Display.LastP().append(Display.ToSpan(str));
+	if(this.isCombo)
+		Display.Div.append(Display.ToP(str));
+	else
+		Display.LastP().append(Display.ToSpan(str));
 }
 ToDisplay.prototype.CriticalHit = function(){
 	var name = this.source.getName();
 	var str =  Display.RS("命中要害","致命一击","效果拔群","会心一击");
-	Display.LastP().append(Display.ToSpan(str,"critical-hit") + Display.ToSpan("！"));
+	if(this.isCombo)
+		Display.Div.append(Display.ToP(Display.ToSpan(str,"critical-hit") + Display.ToSpan("！")));
+	else
+		Display.LastP().append(Display.ToSpan(str,"critical-hit") + Display.ToSpan("！"));
 }
 ToDisplay.prototype.PunchCombo = function(){
 	var name = this.source.getName();
-	var str =  Display.RS("打了一套组合拳","把"+this.opponent.getName()+"按在地上一顿乱打");
+	var str =  Display.RS(name + "打了一套组合拳",name +"把"+this.opponent.getName()+"按在地上一顿乱打");
 	Display.LastP().append(Display.ToP(str));
 }
 //战斗报告全局信息
