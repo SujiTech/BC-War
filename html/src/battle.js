@@ -36,6 +36,9 @@ Battle.analyzeAction = function(player, opponent, action_type){
 			action = this.ActionPunch;
 		break;
 	}
+	var rate = BkRand.GetTechnique(100);
+	if(rate<70)
+		action = this.ActionPunch;
 	action.call(this,player,opponent);
 }
 var eActionType = {
@@ -107,7 +110,7 @@ Battle.NormalAttack = function(player, opponent, dam, isCombo){
 }
 Battle.PunchReact = function(player,opponent,isCombo){
 	//正中，防御，闪避，反击
-	var ram = BkRand.GetOperation()*100 * (player.skl/opponent.skl);
+	var ram = BkRand.GetOperation()*100 + 20 * (player.skl/opponent.skl - 1);
 	//技巧使后几种操作概率提升
 	if (ram<50) {
 		ram = eReactionType.None;
