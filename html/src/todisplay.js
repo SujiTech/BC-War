@@ -28,6 +28,15 @@ ToDisplay.prototype.display = function(){
 		case eDisplayType.Win:
 			this.Win();
 			break;
+		case eDisplayType.Defend:
+			this.Defend();
+			break;
+		case eDisplayType.Dodge:
+			this.Dodge();
+			break;
+		case eDisplayType.Counter:
+			this.Counter();
+			break;
 		default:
 			console.log("DisplayType丢失")
 			break;
@@ -60,6 +69,21 @@ ToDisplay.prototype.Win = function() {
 
 	Display.LastP().append(Display.ToSpan(str));
 }
+ToDisplay.prototype.Defend = function(){
+	var str = this.source.getName();
+	str +=  Display.RS("发动了防御","格挡攻击")+"，";
+	Display.LastP().append(Display.ToSpan(str));
+}
+ToDisplay.prototype.Dodge = function(){
+	var str = this.source.getName();
+	str +=  Display.RS("躲开了攻击","没有被打中","发动闪避")+"，";
+	Display.LastP().append(Display.ToSpan(str));
+}
+ToDisplay.prototype.Counter = function(){
+	var str = this.source.getName();
+	str +=  Display.RS("抓住机会进行了反击","找到了破绽反手一拳")+"，";
+	Display.LastP().append(Display.ToSpan(str));
+}
 //战斗报告全局信息
 Display = {};
 Display.Div = null;
@@ -73,17 +97,20 @@ Display.ToSpan = function(str, cls){
 	return "<span class=\""+ (cls||"") + "\">" + str + "</span>";
 }
 Display.ToP = function(str, cls){
-	return "<p class=\""+ (cls||"") + "\">" + str + "</p>";
+	return "<p class=\"log-item"+ (cls||"") + "\">" + str + "</p>";
 }
 //RandomString
 Display.RS = function()
 {
-    return arguments[Math.round(Math.random()*arguments.length)];
+    return arguments[Math.floor(Math.random()*arguments.length)];
 }
 eDisplayType = {
 	Punch : 0,
 	Damage : 1,
 	Dead : 2,
 	Win : 3,
-	Max : 4,
+	Defend : 4,
+	Dodge : 5,
+	Counter : 6,
+	Max : 7,
 }

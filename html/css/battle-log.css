@@ -9,3 +9,6 @@
 .battle-log .damage.number{
     color: #f00;
 }
+.battle-log .log-item{
+    padding-bottom: 2px;
+}
