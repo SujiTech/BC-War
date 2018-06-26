@@ -68,6 +68,10 @@ body{
 }
 .battle-log .title{
     margin-bottom: 10px;
+    border-bottom: 1px #169ace solid;
+    margin: 0 -10px;
+    padding: 0 5px 5px 5px;
+
 }
 .battle-log .content{
     overflow-y: scroll;
