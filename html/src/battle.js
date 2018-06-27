@@ -75,14 +75,6 @@ Battle.ActionPunchCombo = function(player, opponent){
 	}
 }
 Battle.NormalAttack = function(player, opponent, dam, isCombo){
-	//暴击判断
-	var cri = BkRand.GetTechnique(100);
-	
-	if(cri > this.CriticalHitRate - 20 * (player.luk / opponent.luk - 1)){
-		dam *= 2;
-		new ToDisplay(player, opponent, eDisplayType.CriticalHit, dam, opponent.hp, isCombo);
-	}
-	dam = Math.floor(dam);
 	//反击判断
 	var react = Battle.PunchReact(opponent,player,isCombo);
 	switch(react){
@@ -101,8 +93,17 @@ Battle.NormalAttack = function(player, opponent, dam, isCombo){
 		default:
 			break;
 	}
-	if(dam<0)
+	if(dam<=0)
 		dam = 0;
+	else{
+		//暴击判断
+		var cri = BkRand.GetTechnique(100);
+		if(cri > this.CriticalHitRate - 20 * (player.luk / opponent.luk - 1)){
+			dam *= 2;
+			new ToDisplay(player, opponent, eDisplayType.CriticalHit, dam, opponent.hp, isCombo);
+		}
+		dam = Math.floor(dam);
+	}
 	dam = Math.floor(dam);
 	opponent.OnDamage(dam);
     new ToDisplay(player, opponent, eDisplayType.Damage, dam, opponent.hp, isCombo);
