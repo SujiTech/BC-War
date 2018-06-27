@@ -9,9 +9,13 @@ function init(){
     // console.log(arr.length);
     $("#btn-challenge").click(Fight);
     $("#btn-get-opponents").click(btn_get_opponents);
+    $(".temp-input input").bind('keypress',function(event){
+            if(event.keyCode == "13")Fight();
+        });
+    //$("#btn-get-opponents").dblclick(dbclk_opponents);
     Display.Div = $(".battle-log .content");
     resetBattleLog();
-
+    init_player_info();
     //调试
     $("#btn-speedup").click(display_loop);
 }
@@ -55,19 +59,15 @@ var resetBattleLog = function(){
     //对战次数
     $(".player-info.battle .content").html(0);
 }
-var Fight = function(){
-    // var str = "<p>郭敬明跳起来一下打在姚明膝盖上</p>";
-    // for (var i = 0; i < 6; i++) {
-    //     str += str;
-    // }
-    // $(".battle-log .content").html(str);
-    // console.log($("#name-player1").val());
-    // console.log($("#name-player2").val());
-    Display.Div.html("");
+function init_player_info (){
     gl.p1 = new Hero($("#name-player1").val(),"hero-me");
     gl.p2 = new Hero($("#name-player2").val(),"hero-target");
+}
+var Fight = function(){
+    $(".opponent-list").html("");
+    Display.Div.html("");
     resetRunData(); //TODO 正式版的调用时间应该在初始化完成后
-    
+    init_player_info();
     fight_loop();
     if(!gl.display_looping){
         gl.display_looping = true;
@@ -161,7 +161,10 @@ function list_opponents(opponents){
     }
 }
 function select_opponents(obj){
-    $("#name-player2").data("data",$(obj).data("data"));
-    $("#name-player2").val($(obj).data("data").name);
+    $(".info-grid.name .content.hero-target").data("data",$(obj).data("data"))
+        .val($(obj).data("data").name);
+    $("#name-player2").data("data",$(obj).data("data"))
+        .val($(obj).data("data").name);
+    init_player_info();
     //$("#name-player2").obj = ;
 }
