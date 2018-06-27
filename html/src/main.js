@@ -123,13 +123,45 @@ function btn_get_opponents(){
         name:"刘怪斯",
         code: 1
     }
-    opponents = ["刘怪斯1","刘怪斯2","刘怪斯3","刘怪斯4","刘怪斯5","刘怪斯6","刘怪斯7","刘怪斯8","刘怪斯9","刘怪斯10","刘怪斯11","刘怪斯12","刘怪斯1","刘怪斯2","刘怪斯3","刘怪斯4","刘怪斯5","刘怪斯6","刘怪斯7","刘怪斯8","刘怪斯9","刘怪斯10","刘怪斯11","刘怪斯12"];
+    opponents = [{name:"刘怪斯1",code:1}
+                ,{name:"刘怪斯2",code:2}
+                ,{name:"刘怪斯3",code:3}
+                ,{name:"刘怪斯4",code:4}
+                ,{name:"刘怪斯5",code:5}
+                ,{name:"刘怪斯6",code:6}
+                ,{name:"刘怪斯7",code:7}
+                ,{name:"刘怪斯8",code:8}
+                ,{name:"刘怪斯9",code:9}
+                ,{name:"刘怪斯10",code:10}
+                ,{name:"刘怪斯11",code:11}
+                ,{name:"刘怪斯12",code:12}
+                ,{name:"刘怪斯1",code:1}
+                ,{name:"刘怪斯2",code:2}
+                ,{name:"刘怪斯3",code:3}
+                ,{name:"刘怪斯4",code:4}
+                ,{name:"刘怪斯5",code:5}
+                ,{name:"刘怪斯6",code:6}
+                ,{name:"刘怪斯7",code:7}
+                ,{name:"刘怪斯8",code:8}
+                ,{name:"刘怪斯9",code:9}
+                ,{name:"刘怪斯10",code:10}
+                ,{name:"刘怪斯11",code:11}
+                ,{name:"刘怪斯12",code:12}];
     list_opponents(opponents);
 }
 function list_opponents(opponents){
     $(".opponent-list").html("");
-    for (var i = opponents.length - 1; i >= 0; i--) {
-        opponents[i]
-        $(".opponent-list").append(Display.ToElem("div",Display.ToElem("button",opponents[i]),"item"));
+    for (var i = 0; i < opponents.length; i++) {
+        $(".opponent-list").append(Display.ToElem("div",Display.ToElem("button",opponents[i].name),"item"));
+        var last = $(".opponent-list .item").last();
+        last.data("data",opponents[i]);
+        last.click(function(){
+            select_opponents(this);
+        })
     }
+}
+function select_opponents(obj){
+    $("#name-player2").data("data",$(obj).data("data"));
+    $("#name-player2").val($(obj).data("data").name);
+    //$("#name-player2").obj = ;
 }
