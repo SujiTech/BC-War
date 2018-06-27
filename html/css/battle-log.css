@@ -20,3 +20,6 @@
 .battle-log .combo{
     text-indent:20px;
 }
+.battle-log .defend{
+    color: #1030cc;
+}

@@ -91,7 +91,7 @@ ToDisplay.prototype.display = function(){
 }
 ToDisplay.prototype.Punch = function() {
 	var str = this.source.getName();
-	str +=  Display.RS("挥出一拳","挥出摆拳","踢出一脚侧踹","使用正蹬")+"，";
+	str +=  Display.RS(["挥出一拳","挥出摆拳","踢出一脚侧踹","使用正蹬"])+"，";
 
 	Display.LastP().append(Display.ToSpan(str));
 }
@@ -108,7 +108,7 @@ ToDisplay.prototype.Damage = function() {
 }
 ToDisplay.prototype.Dead = function() {
 	var str = this.source.getName();
-	str +=  Display.RS("倒下了","再起不能","举手投降","被打下了擂台","已经不能继续战斗了")+"，";
+	str +=  Display.RS(["倒下了","再起不能","举手投降","被打下了擂台","已经不能继续战斗了"]);
 
 	Display.LastP().append(Display.ToSpan(str));
 }
@@ -120,27 +120,27 @@ ToDisplay.prototype.Win = function() {
 }
 ToDisplay.prototype.Defend = function(){
 	var str = this.source.getName();
-	str +=  Display.RS("发动了防御","格挡攻击")+"，";
+	str +=  Display.RS(["迅速捂住了脸","抱头蹲下","进行防御"],"defend")+"，";
 	Display.LastP().append(Display.ToSpan(str));
 }
 ToDisplay.prototype.Dodge = function(){
 	var str = this.source.getName();
-	str +=  Display.RS("躲开了攻击","没有被打中","发动闪避");
+	str +=  Display.RS(["躲开了攻击","没有被打中","发动闪避"]);
 	Display.LastP().append(Display.ToSpan(str));
 }
 ToDisplay.prototype.Counter = function(){
 	var str = this.source.getName();
-	str +=  Display.RS("抓住机会进行了反击","找到了破绽反手一拳")+"，";
+	str +=  Display.RS(["抓住机会进行了反击","找到了破绽反手一拳"])+"，";
 	Display.LastP().append(Display.ToSpan(str));
 }
 ToDisplay.prototype.CriticalHit = function(){
 	var name = this.source.getName();
-	var str =  Display.RS("命中要害","致命一击","效果拔群","会心一击");
+	var str =  Display.RS(["命中要害","致命一击","这一下看起来很痛","会心一击"]);
 	Display.LastP().append(Display.ToSpan(str,"critical-hit") + Display.ToSpan("！"));
 }
 ToDisplay.prototype.PunchCombo = function(){
 	var name = this.source.getName();
-	var str =  Display.RS(name + "打了一套组合拳",name +"把"+this.opponent.getName()+"按在地上一顿乱打");
+	var str =  Display.RS([name + "打了一套组合拳",name +"把"+this.opponent.getName()+"按在地上一顿乱打"]);
 	Display.LastP().append(Display.ToSpan(str));
 }
 /*目前行动类型
@@ -171,9 +171,9 @@ Display.ToP = function(str, cls){
 	return "<p class=\"log-item "+ (cls||"") + "\">" + str + "</p>";
 }
 //RandomString
-Display.RS = function()
+Display.RS = function(arr, cls)
 {
-    return arguments[Math.floor(Math.random()*arguments.length)];
+    return this.ToSpan(arr[Math.floor(Math.random()*arr.length)],cls);
 }
 Display.HPBar = function(tag, number, maxhp, duration){
 	var hpwidth = number/maxhp * 100;

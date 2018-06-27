@@ -119,26 +119,35 @@
 		</div>
 		<div class="space-block"></div>
 	</div>
-	<div class="botoomline">
+	<div class="bottomline">
+		<div class="steins-group">
+			<div class="level player-info">
+				<div class="title">等级</div>
+				<div class="content">1</div>
+			</div>
+			<!-- 未投币会不断重置回第一场 -->
+			<div class="battle player-info">
+				<div class="title">战斗场次</div>
+				<div class="content">1</div>
+			</div>
+			<!-- 由战斗生成 -->
+			<div class="random-number player-info" r-key = "1" r-index = "1">
+				<div class="title">第一行动乱数</div>
+				<div class="content">2B</div>
+			</div>
+		</div>
 		<div class="interface">
 			<button id="btn-refresh" title="消耗货币，打乱世界线">随机调整战术</button>
 			<button id="btn-levelup" title="消耗货币，随机永久提升一点属性">升级</button>
 			<button id="btn-challenge" title="以当前配置挑战擂台!">挑战</button>
-			<div class="steins-group">
-				<div class="level player-info">
-					<div class="title">等级</div>
-					<div class="content">1</div>
-				</div>
-				<div class="level player-info">
-					<div class="title">第一行动乱数</div>
-					<div class="content">2B</div>
-				</div>
-				将用于显示特定乱数
-				并有调整可能
-			</div>
 		</div>
-		<div class="debug">
+		<div class="interface debug">
+			<p>Debug</p>
 			<button id="btn-speedup" title="多一个表演线程">加速</button>
+		</div>
+		<div class="comment">
+			将用于显示特定乱数
+			并有调整可能
 		</div>
 	</div>
 	<script type="text/javascript">
