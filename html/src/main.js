@@ -1,16 +1,8 @@
 function init(){
-    
-    // var arr = [];
-    // arr[1] = 1;
-
-    // console.log(arr[0]);
-    // console.log(arr[1]);
-    // console.log(arr[10]);
-    // console.log(arr.length);
     $("#btn-challenge").click(Fight);
     $("#btn-get-opponents").click(btn_get_opponents);
     $(".temp-input input").bind('keypress',function(event){
-            if(event.keyCode == "13")Fight();
+            if(event.keyCode == "13"){ResetToFirstBattle();Fight();}
         });
     //$("#btn-get-opponents").dblclick(dbclk_opponents);
     Display.Div = $(".battle-log .content");
@@ -22,6 +14,7 @@ function init(){
 var gl = {
     p1 : null,
     p2 : null,
+    battle_times : 0,
     p1_action_list : [],
     p1_now_action_index : 0,
     p2_action_list : [],
@@ -31,43 +24,17 @@ var gl = {
     display_looping : false,
 }
 var rundata = {};
-var resetRunData = function(){
-    rundata.p1_action_list = gl.p1_action_list.concat();
-    rundata.p1_now_action_index = gl.p1_now_action_index;
-    rundata.p2_action_list = gl.p2_action_list.concat();
-    rundata.p2_now_action_index = gl.p2_now_action_index;
-    rundata.display_index = gl.display_index;
-    rundata.display_list = gl.display_list.concat();
-}
-//选择敌人后调用
-var resetRandomSeed = function(){
-    BkRand.OrderCode = {
-        seed:39
-    };
-    BkRand.OperationCode = {
-        seed:55
-    };
-    BkRand.TechniqueCode = {
-        seed:77
-    };
-    BkRand.IntensityCode = {
-        seed:66
-    };
-}
-//重置战斗统计
-var resetBattleLog = function(){
-    //对战次数
-    $(".player-info.battle .content").html(0);
-}
-function init_player_info (){
-    gl.p1 = new Hero($("#name-player1").val(),"hero-me");
-    gl.p2 = new Hero($("#name-player2").val(),"hero-target");
-}
 var Fight = function(){
+    //准备界面
     $(".opponent-list").html("");
     Display.Div.html("");
-    resetRunData(); //TODO 正式版的调用时间应该在初始化完成后
     init_player_info();
+    //初始化数据
+    resetRunData(); //TODO 正式版的调用时间应该在初始化完成后
+    //统计战斗次数
+    gl.battle_times ++;
+    $(".player-info.battle .content").html(gl.battle_times);
+    //战斗开始
     fight_loop();
     if(!gl.display_looping){
         gl.display_looping = true;
@@ -105,7 +72,6 @@ function fight_loop(){
         }
     }
 }
-
 function display_loop(){
     var now_display = rundata.display_list[rundata.display_index];
     if(now_display){
@@ -115,7 +81,6 @@ function display_loop(){
     else
         setTimeout(display_loop,500);
 }
-
 function btn_get_opponents(){
     var opponents;
     //请求数据
@@ -167,4 +132,45 @@ function select_opponents(obj){
         .val($(obj).data("data").name);
     init_player_info();
     //$("#name-player2").obj = ;
+}
+
+
+function ResetToFirstBattle(){
+    //界面记录
+    resetBattleLog();
+    //随机数种子
+    resetRandomSeed();
+}
+//重置战斗统计
+function resetBattleLog(){
+    //对战次数
+    gl.battle_times = 0;
+    $(".player-info.battle .content").html(gl.battle_times);
+}
+function init_player_info (){
+    gl.p1 = new Hero($("#name-player1").val(),"hero-me");
+    gl.p2 = new Hero($("#name-player2").val(),"hero-target");
+}
+var resetRunData = function(){
+    rundata.p1_action_list = gl.p1_action_list.concat();
+    rundata.p1_now_action_index = gl.p1_now_action_index;
+    rundata.p2_action_list = gl.p2_action_list.concat();
+    rundata.p2_now_action_index = gl.p2_now_action_index;
+    rundata.display_index = gl.display_index;
+    rundata.display_list = gl.display_list.concat();
+}
+//选择敌人后调用
+var resetRandomSeed = function(){
+    BkRand.OrderCode = {
+        seed:39
+    };
+    BkRand.OperationCode = {
+        seed:55
+    };
+    BkRand.TechniqueCode = {
+        seed:77
+    };
+    BkRand.IntensityCode = {
+        seed:66
+    };
 }
