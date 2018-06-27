@@ -162,7 +162,7 @@ Display.LastP = function(){
 	return $(".battle-log .content p").last();
 };
 Display.ToElem = function(elemType, str, cls){
-	return "<" + elemType + "class=\""+ (cls||"") + "\">" + str + "</" + elemType + ">";
+	return "<" + elemType + " class=\""+ (cls||"") + "\">" + str + "</" + elemType + ">";
 }
 Display.ToSpan = function(str, cls){
 	return "<span class=\""+ (cls||"") + "\">" + str + "</span>";

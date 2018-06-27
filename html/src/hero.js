@@ -55,5 +55,5 @@ Hero.prototype.OnDamage = function(dam){
     console.log(this.name + "收到伤害" + dam + "点");
 }
 Hero.prototype.getName = function(){
-    return Display.ToSpan(this.name, this.data.tag+" name");
+    return Display.ToSpan("【"+this.name+"】", this.data.tag+" name");
 }

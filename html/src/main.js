@@ -8,8 +8,9 @@ function init(){
     // console.log(arr[10]);
     // console.log(arr.length);
     $("#btn-challenge").click(Fight);
+    $("#btn-get-opponents").click(btn_get_opponents);
     Display.Div = $(".battle-log .content");
-
+    resetBattleLog();
 
     //调试
     $("#btn-speedup").click(display_loop);
@@ -33,6 +34,26 @@ var resetRunData = function(){
     rundata.p2_now_action_index = gl.p2_now_action_index;
     rundata.display_index = gl.display_index;
     rundata.display_list = gl.display_list.concat();
+}
+//选择敌人后调用
+var resetRandomSeed = function(){
+    BkRand.OrderCode = {
+        seed:39
+    };
+    BkRand.OperationCode = {
+        seed:55
+    };
+    BkRand.TechniqueCode = {
+        seed:77
+    };
+    BkRand.IntensityCode = {
+        seed:66
+    };
+}
+//重置战斗统计
+var resetBattleLog = function(){
+    //对战次数
+    $(".player-info.battle .content").html(0);
 }
 var Fight = function(){
     // var str = "<p>郭敬明跳起来一下打在姚明膝盖上</p>";
@@ -93,4 +114,22 @@ function display_loop(){
     }
     else
         setTimeout(display_loop,500);
+}
+
+function btn_get_opponents(){
+    var opponents;
+    //请求数据
+    var pattern = {
+        name:"刘怪斯",
+        code: 1
+    }
+    opponents = ["刘怪斯1","刘怪斯2","刘怪斯3","刘怪斯4","刘怪斯5","刘怪斯6","刘怪斯7","刘怪斯8","刘怪斯9","刘怪斯10","刘怪斯11","刘怪斯12","刘怪斯1","刘怪斯2","刘怪斯3","刘怪斯4","刘怪斯5","刘怪斯6","刘怪斯7","刘怪斯8","刘怪斯9","刘怪斯10","刘怪斯11","刘怪斯12"];
+    list_opponents(opponents);
+}
+function list_opponents(opponents){
+    $(".opponent-list").html("");
+    for (var i = opponents.length - 1; i >= 0; i--) {
+        opponents[i]
+        $(".opponent-list").append(Display.ToElem("div",Display.ToElem("button",opponents[i]),"item"));
+    }
 }
