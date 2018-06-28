@@ -14,6 +14,8 @@ function Hero(hashcode1,tag,hashcode2){
     this.data.tag = tag;
 
     this.seed = parseInt("0x"+hex_md5(this.name));
+    console.log(this.name +"  /  "+hex_md5(this.name));
+    console.log(this.seed)
     this.init();
 }
 Hero.prototype.init = function(){

@@ -13,7 +13,9 @@ function init(){
 }
 var gl = {
     p1 : null,
+    p1hash : 0,
     p2 : null,
+    p2hash : 0,
     battle_times : 0,
     p1_action_list : [],
     p1_now_action_index : 0,
@@ -163,14 +165,18 @@ var resetRunData = function(){
 var resetRandomSeed = function(){
     BkRand.OrderCode = {
         seed:39
+        //seed:gl.p1hash+gl.p2hash;
     };
     BkRand.OperationCode = {
         seed:55
+        //seed:gl.p1hash-gl.p2hash;
     };
     BkRand.TechniqueCode = {
         seed:77
+        //seed:gl.p1hash*gl.p2hash;
     };
     BkRand.IntensityCode = {
         seed:66
+        //seed:gl.p1hash/gl.p2hash;
     };
 }
