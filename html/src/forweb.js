@@ -1,46 +1,12 @@
-//获取n次战斗中是否有战胜的情况
-function getResult(fight_times,hash_p1,hash_p2){
-    gl.battle_times = 0;
-    for (var i = 0; i < fight_times; i++) {
-        init_player_info(hash_p1,hash_p2);
-        resetRunData();
-        //统计战斗次数
-        gl.battle_times ++;
-        var res = web_fight_loop();
-        if(res)
-            return true;
-    }
-    return false;
-}
-function web_fight_loop(){
-    var res,action_type,success_rate;
-    var acitve,passive;
-    while(true){
-        res = Battle.generateActionList();
-        if(res){
-            rundata.p1_now_action_index++;
-            acitve = gl.p1;
-            passive = gl.p2;
-        }
-        else {
-            rundata.p2_now_action_index++;
-            acitve = gl.p2;
-            passive = gl.p1;
-        }
-        Battle.generateAction(acitve, passive);
-        if(gl.p1.hp==0){
-            console.log("p1-lose")
-            break;
-        }else if(gl.p2.hp==0){
-            console.log("p2-lose")
-            return true;
-        }
-    }
-}
 //main.js
-var gl = {
+function Main(){}
+Main.prototype = {
     p1 : null,
     p2 : null,
+    // p1_wallet : {hash:parseInt("0x3025e28ba5769d139e1395387a488394"),name:"袭金亮"},
+    // p2_wallet : {hash:parseInt("0xbed46142792616f09a9120a724fcb64e"),name:"刘怪斯14"},
+    p1_wallet : {hash:parseInt("0x3025e28ba5769d139e1395387a4883941"),name:"袭金亮"},
+    p2_wallet : {hash:parseInt("0xbed46142792616f09a9120a724fcb64e"),name:"刘怪斯14"},
     battle_times : 0,
     p1_action_list : [],
     p1_now_action_index : 0,
@@ -49,25 +15,76 @@ var gl = {
     display_index : 0,
     display_list : [],
     display_looping : false,
+    bk_rand :null,
 }
-var rundata = {};
+Main.prototype.init = function(){
+    var main = this;
+    //战斗数据
+    this.ResetToFirstBattle()
+    this.init_player_info();
+}
+Main.prototype.rundata = {};
+Main.prototype.Fight = function(){
+    //准备界面
+    this.init_player_info();
+    //初始化数据
+    this.resetRunData(); //TODO 正式版的调用时间应该在初始化完成后
+    //统计战斗次数
+    this.battle_times ++;
+    //战斗开始
 
-function ResetToFirstBattle(){
-    //界面记录
-    resetBattleLog();
+    this.fight_loop(this.p1,this.p2);
+    if(!this.display_looping){
+        this.display_looping = true;
+        this.display_loop();
+    }
+
 }
-function init_player_info (hash_p1,hash_p2){
-    gl.p1 = new Hero(hash_p1,"hero-me");
-    gl.p2 = new Hero(hash_p2,"hero-target");
-    
+
+Main.prototype.fight_loop = function(p1,p2){
+    var res,action_type,success_rate;
+    var acitve,passive;
+    var battle = new Battle(this.bk_rand);
+    while(true){
+        res = battle.generateActionList(p1,p2,this.rundata);
+        if(res){
+            this.rundata.p1_now_action_index++;
+            acitve = p1;
+            passive = p2;
+        }
+        else {
+            this.rundata.p2_now_action_index++;
+            acitve = p2;
+            passive = p1;
+        }
+        battle.generateAction(acitve, passive);
+        if(p1.hp==0){
+            console.log("p2获胜")
+            break;
+        }else if(p2.hp==0){
+            console.log("p1获胜")
+            break;
+        }
+    }
 }
-var resetRunData = function(){
-    rundata.p1_action_list = gl.p1_action_list.concat();
-    rundata.p1_now_action_index = gl.p1_now_action_index;
-    rundata.p2_action_list = gl.p2_action_list.concat();
-    rundata.p2_now_action_index = gl.p2_now_action_index;
-    rundata.display_index = gl.display_index;
-    rundata.display_list = gl.display_list.concat();
+
+//换人的时候也要增加
+Main.prototype.ResetToFirstBattle = function(){
+    //随机数种子
+    this.bk_rand = new BkRand(this.p1_wallet.hash, this.p2_wallet.hash);
+}
+
+Main.prototype.init_player_info = function (){
+    this.p1 = new Hero(this.p1_wallet.hash, "hero-me", this.p1_wallet.name, this.bk_rand);
+    this.p2 = new Hero(this.p2_wallet.hash, "hero-target", this.p2_wallet.name, this.bk_rand);
+}
+Main.prototype.resetRunData = function(){
+    this.rundata.p1_action_list = this.p1_action_list.concat();
+    this.rundata.p1_now_action_index = this.p1_now_action_index;
+    this.rundata.p2_action_list = this.p2_action_list.concat();
+    this.rundata.p2_now_action_index = this.p2_now_action_index;
+    this.rundata.display_index = this.display_index;
+    this.rundata.display_list = this.display_list.concat();
 }
 
 // random.js
@@ -176,13 +193,11 @@ var eReactionType = {
     Max : 4,
 };
 Battle.prototype.ActionPunch = function(player,opponent){
-    new ToDisplay(player, opponent, eDisplayType.Punch);
     var dam = player.atk * (0.5 + this.bk_rand.GetIntensity());
     this.NormalAttack(player, opponent, dam, false);
 }
 //组合拳 少说打3下，后续最多再3下
 Battle.prototype.ActionPunchCombo = function(player, opponent){
-    new ToDisplay(player, opponent, eDisplayType.PunchCombo, null, null, true);
     var remain_qi = 600;
     var is_continue = true;
     while(remain_qi>0){
@@ -222,13 +237,11 @@ Battle.prototype.NormalAttack = function(player, opponent, dam, isCombo){
         var cri = this.bk_rand.GetTechnique(100);
         if(cri > this.CriticalHitRate - 20 * (player.luk / opponent.luk - 1)){
             dam *= 2;
-            new ToDisplay(player, opponent, eDisplayType.CriticalHit, dam, opponent.hp, isCombo);
         }
         dam = Math.floor(dam);
     }
     dam = Math.floor(dam);
     opponent.OnDamage(dam);
-    new ToDisplay(player, opponent, eDisplayType.Damage, dam, opponent.hp, isCombo);
     return true;
 }
 Battle.prototype.PunchReact = function(player,opponent,isCombo){
@@ -239,18 +252,14 @@ Battle.prototype.PunchReact = function(player,opponent,isCombo){
         ram = eReactionType.None;
     }else if(ram < 75){
         ram = eReactionType.Defend;
-        new ToDisplay(player, opponent, eDisplayType.Defend, dam, null, isCombo);
     }else if(ram < 95){
         ram = eReactionType.Dodge;
-        new ToDisplay(player, opponent, eDisplayType.Dodge, dam, null, isCombo);
     }else{
         //反击
         ram = eReactionType.Counter;
         var dam = player.atk * (0.5 + this.bk_rand.GetIntensity());
         dam = Math.floor(dam);
         opponent.OnDamage(dam);
-        new ToDisplay(player, opponent, eDisplayType.Counter, dam , null, isCombo);
-        new ToDisplay(player, opponent, eDisplayType.Damage, dam, opponent.hp, isCombo);
     }
 
     return ram;
@@ -297,15 +306,6 @@ Hero.prototype.readAttri = function() {
     this.spd = this.data.spd;
     this.skl = this.data.skl;
     var target_tag = ".content."+this.data.tag;
-    $(".name "+target_tag).html("<p>"+this.name+'</p>');
-    $(".hp "+target_tag).html("<p>"+this.hp+'</p>');
-    $(".atk "+target_tag).html("<p>"+this.atk+'</p>');
-    $(".def "+target_tag).html("<p>"+this.def+'</p>');
-    $(".luk "+target_tag).html("<p>"+this.luk+'</p>');
-    $(".spd "+target_tag).html("<p>"+this.spd+'</p>');
-    $(".skl "+target_tag).html("<p>"+this.skl+'</p>');
-    //初始化血条显示
-    Display.HPBarQ(this.data.tag, this.hp, this.data.hp);
 }
 //静态成员变量
 Hero.prototype.id = 0;
@@ -318,4 +318,48 @@ Hero.prototype.OnDamage = function(dam){
 }
 Hero.prototype.getName = function(){
     return Display.ToSpan("【"+this.name+"】", this.data.tag+" name");
+}
+
+
+//获取n次战斗中是否有战胜的情况
+Main.prototype.getResult = function(fight_times,hash_p1,hash_p2){
+    this.ResetToFirstBattle();
+    this.battle_times = 0;
+    for (var i = 0; i < fight_times; i++) {
+        this.init_player_info(hash_p1,hash_p2);
+        this.resetRunData();
+        //统计战斗次数
+        this.battle_times ++;
+        var res = this.web_fight_loop();
+        if(res)
+            return true;
+    }
+    return false;
+}
+Main.prototype.web_fight_loop = function(){
+    var res,action_type,success_rate;
+    var acitve,passive;
+    var battle = new Battle(this.bk_rand);
+    while(true){
+        res = battle.generateActionList(this.p1,this.p2,this.rundata);
+        if(res){
+            this.rundata.p1_now_action_index++;
+            acitve = this.p1;
+            passive = this.p2;
+        }
+        else {
+            this.rundata.p2_now_action_index++;
+            acitve = this.p2;
+            passive = this.p1;
+        }
+        battle.generateAction(acitve, passive);
+        if(this.p1.hp==0){
+            console.log("p1-lose")
+            break;
+        }else if(this.p2.hp==0){
+            console.log("p2-lose")
+            return true;
+        }
+    }
+
 }

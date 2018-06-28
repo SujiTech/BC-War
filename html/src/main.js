@@ -1,25 +1,5 @@
-function init(){
-    $("#btn-challenge").click(Fight);
-    $("#btn-get-opponents").click(btn_get_opponents);
-    $(".temp-input input").bind('keypress',function(event){
-            if(event.keyCode == "13"){
-                console.log("功能重做中");
-                //ResetToFirstBattle();Fight();
-            }
-        });
-    //$("#btn-get-opponents").dblclick(dbclk_opponents);
-    Display.Div = $(".battle-log .content");
-
-    console.log(getResult(3));
-
-    //战斗数据
-    ResetToFirstBattle()
-    init_player_info(gl,rundata);
-    //调试
-    $("#btn-speedup").click(display_loop);
-
-}
-var gl = {
+function Main(){}
+Main.prototype = {
     p1 : null,
     p2 : null,
     // p1_wallet : {hash:parseInt("0x3025e28ba5769d139e1395387a488394"),name:"袭金亮"},
@@ -36,40 +16,64 @@ var gl = {
     display_looping : false,
     bk_rand :null,
 }
-var rundata = {};
-var Fight = function(){
+Main.prototype.init = function(){
+    var main = this;
+    $("#btn-challenge").click(function(){
+        main.Fight();
+    });
+    $("#btn-get-opponents").click(function(){
+        main.btn_get_opponents();
+    });
+    $(".temp-input input").bind('keypress',function(event){
+            if(event.keyCode == "13"){
+                console.log("功能重做中");
+                //ResetToFirstBattle();Fight();
+            }
+        });
+    //$("#btn-get-opponents").dblclick(dbclk_opponents);
+    Display.Div = $(".battle-log .content");
+    //战斗数据
+    this.ResetToFirstBattle()
+    this.init_player_info();
+    //调试
+    $("#btn-speedup").click(function(){
+        main.display_loop();
+    });
+}
+Main.prototype.rundata = {};
+Main.prototype.Fight = function(){
     //准备界面
     $(".opponent-list").html("");
     Display.Div.html("");
-    init_player_info(gl,rundata);
+    this.init_player_info();
     //初始化数据
-    resetRunData(gl,rundata); //TODO 正式版的调用时间应该在初始化完成后
+    this.resetRunData(); //TODO 正式版的调用时间应该在初始化完成后
     //统计战斗次数
-    gl.battle_times ++;
-    $(".player-info.battle .content").html(gl.battle_times);
+    this.battle_times ++;
+    $(".player-info.battle .content").html(this.battle_times);
     //战斗开始
 
-    fight_loop(gl.p1,gl.p2,rundata);
-    if(!gl.display_looping){
-        gl.display_looping = true;
-        display_loop();
+    this.fight_loop(this.p1,this.p2);
+    if(!this.display_looping){
+        this.display_looping = true;
+        this.display_loop();
     }
 
 }
 
-function fight_loop(p1,p2,rundata){
+Main.prototype.fight_loop = function(p1,p2){
     var res,action_type,success_rate;
     var acitve,passive;
-    var battle = new Battle(gl.bk_rand);
+    var battle = new Battle(this.bk_rand);
     while(true){
-        res = battle.generateActionList(p1,p2,rundata);
+        res = battle.generateActionList(p1,p2,this.rundata);
         if(res){
-            rundata.p1_now_action_index++;
+            this.rundata.p1_now_action_index++;
             acitve = p1;
             passive = p2;
         }
         else {
-            rundata.p2_now_action_index++;
+            this.rundata.p2_now_action_index++;
             acitve = p2;
             passive = p1;
         }
@@ -87,16 +91,16 @@ function fight_loop(p1,p2,rundata){
         }
     }
 }
-function display_loop(){
-    var now_display = rundata.display_list[rundata.display_index];
+Main.prototype.display_loop = function(){
+    var now_display = this.rundata.display_list[this.rundata.display_index];
     if(now_display){
         now_display.display();
-        rundata.display_index++;
+        this.rundata.display_index++;
     }
     else
-        setTimeout(display_loop,500);
+        setTimeout(this.display_loop,500);
 }
-function btn_get_opponents(){
+Main.prototype.btn_get_opponents = function(){
     var opponents;
     //请求数据
     var pattern = {
@@ -129,7 +133,7 @@ function btn_get_opponents(){
                 ,{name:"刘怪斯12",code:12}];
     list_opponents(opponents);
 }
-function list_opponents(opponents){
+Main.prototype.list_opponents = function(opponents){
     $(".opponent-list").html("");
     for (var i = 0; i < opponents.length; i++) {
         $(".opponent-list").append(Display.ToElem("div",Display.ToElem("button",opponents[i].name),"item"));
@@ -140,37 +144,37 @@ function list_opponents(opponents){
         })
     }
 }
-function select_opponents(obj){
+Main.prototype.select_opponents = function(obj){
     $(".info-grid.name .content.hero-target").data("data",$(obj).data("data"))
         .val($(obj).data("data").name);
     $("#name-player2").data("data",$(obj).data("data"))
         .val($(obj).data("data").name);
-    init_player_info(gl,rundata);
+    init_player_info();
     //$("#name-player2").obj = ;
 }
 
 //换人的时候也要增加
-function ResetToFirstBattle(){
+Main.prototype.ResetToFirstBattle = function(){
     //界面记录
-    resetBattleLog();
+    this.resetBattleLog();
     //随机数种子
-    gl.bk_rand = new BkRand(gl.p1_wallet.hash, gl.p2_wallet.hash);
+    this.bk_rand = new BkRand(this.p1_wallet.hash, this.p2_wallet.hash);
 }
 //重置战斗统计
-function resetBattleLog(){
+Main.prototype.resetBattleLog = function(){
     //对战次数
-    gl.battle_times = 0;
-    $(".player-info.battle .content").html(gl.battle_times);
+    this.battle_times = 0;
+    $(".player-info.battle .content").html(this.battle_times);
 }
-function init_player_info (gl,rundata){
-    gl.p1 = new Hero(gl.p1_wallet.hash, "hero-me", gl.p1_wallet.name, gl.bk_rand);
-    gl.p2 = new Hero(gl.p2_wallet.hash, "hero-target", gl.p2_wallet.name, gl.bk_rand);
+Main.prototype.init_player_info = function (){
+    this.p1 = new Hero(this.p1_wallet.hash, "hero-me", this.p1_wallet.name, this.bk_rand);
+    this.p2 = new Hero(this.p2_wallet.hash, "hero-target", this.p2_wallet.name, this.bk_rand);
 }
-var resetRunData = function(gl,rundata){
-    rundata.p1_action_list = gl.p1_action_list.concat();
-    rundata.p1_now_action_index = gl.p1_now_action_index;
-    rundata.p2_action_list = gl.p2_action_list.concat();
-    rundata.p2_now_action_index = gl.p2_now_action_index;
-    rundata.display_index = gl.display_index;
-    rundata.display_list = gl.display_list.concat();
+Main.prototype.resetRunData = function(){
+    this.rundata.p1_action_list = this.p1_action_list.concat();
+    this.rundata.p1_now_action_index = this.p1_now_action_index;
+    this.rundata.p2_action_list = this.p2_action_list.concat();
+    this.rundata.p2_now_action_index = this.p2_now_action_index;
+    this.rundata.display_index = this.display_index;
+    this.rundata.display_list = this.display_list.concat();
 }
