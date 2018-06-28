@@ -198,6 +198,9 @@ body{
     height: 50px;
     margin: 5px;
 }
+.opponent-list .item:last-child button{
+    background-color: orange;
+}
 .opponent-list .item button{
     width: 100%;
     height: 100%;

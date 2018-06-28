@@ -105,51 +105,53 @@ Main.prototype.btn_get_opponents = function(){
     //请求数据
     var pattern = {
         name:"刘怪斯",
-        code: 1
+        hash: 1
     }
-    opponents = [{name:"刘怪斯1",code:1}
-                ,{name:"刘怪斯2",code:2}
-                ,{name:"刘怪斯3",code:3}
-                ,{name:"刘怪斯4",code:4}
-                ,{name:"刘怪斯5",code:5}
-                ,{name:"刘怪斯6",code:6}
-                ,{name:"刘怪斯7",code:7}
-                ,{name:"刘怪斯8",code:8}
-                ,{name:"刘怪斯9",code:9}
-                ,{name:"刘怪斯10",code:10}
-                ,{name:"刘怪斯11",code:11}
-                ,{name:"刘怪斯12",code:12}
-                ,{name:"刘怪斯1",code:1}
-                ,{name:"刘怪斯2",code:2}
-                ,{name:"刘怪斯3",code:3}
-                ,{name:"刘怪斯4",code:4}
-                ,{name:"刘怪斯5",code:5}
-                ,{name:"刘怪斯6",code:6}
-                ,{name:"刘怪斯7",code:7}
-                ,{name:"刘怪斯8",code:8}
-                ,{name:"刘怪斯9",code:9}
-                ,{name:"刘怪斯10",code:10}
-                ,{name:"刘怪斯11",code:11}
-                ,{name:"刘怪斯12",code:12}];
-    list_opponents(opponents);
+    opponents = [{name:"刘怪斯1",hash:1}
+                ,{name:"刘怪斯2",hash:2}
+                ,{name:"刘怪斯3",hash:3}
+                ,{name:"刘怪斯4",hash:4}
+                ,{name:"刘怪斯5",hash:5}
+                ,{name:"刘怪斯6",hash:6}
+                ,{name:"刘怪斯7",hash:7}
+                ,{name:"刘怪斯8",hash:8}
+                ,{name:"刘怪斯9",hash:9}
+                ,{name:"刘怪斯10",hash:10}
+                ,{name:"刘怪斯11",hash:11}
+                ,{name:"刘怪斯12",hash:12}
+                ,{name:"刘怪斯1",hash:1}
+                ,{name:"刘怪斯2",hash:2}
+                ,{name:"刘怪斯3",hash:3}
+                ,{name:"刘怪斯4",hash:4}
+                ,{name:"刘怪斯5",hash:5}
+                ,{name:"刘怪斯6",hash:6}
+                ,{name:"刘怪斯7",hash:7}
+                ,{name:"刘怪斯8",hash:8}
+                ,{name:"刘怪斯9",hash:9}
+                ,{name:"刘怪斯10",hash:10}
+                ,{name:"刘怪斯11",hash:11}
+                ,{name:"刘怪斯12",hash:12}];
+    this.list_opponents(opponents);
 }
 Main.prototype.list_opponents = function(opponents){
     $(".opponent-list").html("");
     for (var i = 0; i < opponents.length; i++) {
         $(".opponent-list").append(Display.ToElem("div",Display.ToElem("button",opponents[i].name),"item"));
-        var last = $(".opponent-list .item").last();
-        last.data("data",opponents[i]);
-        last.click(function(){
-            select_opponents(this);
-        })
+        var fn = function(){
+            var obj = i;
+            $(".opponent-list .item").last().click(function(){
+                main.select_opponents(opponents[obj]);
+            })
+        };
+        fn();
     }
 }
 Main.prototype.select_opponents = function(obj){
-    $(".info-grid.name .content.hero-target").data("data",$(obj).data("data"))
-        .val($(obj).data("data").name);
-    $("#name-player2").data("data",$(obj).data("data"))
-        .val($(obj).data("data").name);
-    init_player_info();
+    $(".info-grid.name .content.hero-target").val(obj.name);
+    $("#name-player2").val(obj.name);
+    console.log(obj);
+    this.p2_wallet = obj;
+    this.init_player_info();
     //$("#name-player2").obj = ;
 }
 
