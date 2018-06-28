@@ -1,3 +1,15 @@
+
+var HttpRequest = require("nebulas").HttpRequest;
+var Neb = require("nebulas").Neb;
+var NebPay = require("nebpay");
+var neb = new Neb();
+neb.setRequest(new HttpRequest("https://testnet.nebulas.io"));
+var nebApi = neb.api;
+var nebPay = new NebPay();
+var nebState = undefined;
+var account = undefined;
+var contractAddress = "";
+
 function Main(){}
 Main.prototype = {
     p1 : null,
@@ -103,38 +115,93 @@ Main.prototype.display_loop = function(){
         setTimeout(function(){main.display_loop()},500);
     }
 }
+
+//times: 次数
+Main.prototype.upload_winner = function(times) {
+
+    var to = contractAddress;
+    var value = "0";
+    var callFunction = "setWinner";
+    var callArgs =  JSON.stringify([{
+        times: times
+    }]);
+    var options = {
+        qrcode: {
+            showQRCode: false,      //是否显示二维码信息
+            container: undefined,    //指定显示二维码的canvas容器，不指定则生成一个默认canvas
+            completeTip: undefined, // 完成支付提示
+            cancelTip: undefined // 取消支付提示
+        },
+        callback: NebPay.config.testnetUrl, //在测试网查询
+        listener: function (value) {
+
+            if (typeof value === 'string') {
+                //用户取消了支付
+                return
+            }
+            //支付已经提交，状态未知
+        }
+    };
+    nebPay.call(to, value, callFunction, callArgs, options);
+}
+
 Main.prototype.btn_get_opponents = function(){
     var opponents;
     //请求数据
     var pattern = {
         name:"刘怪斯",
         hash: 1
-    }
-    opponents = [{name:"刘怪斯1",hash:1}
-                ,{name:"刘怪斯2",hash:2}
-                ,{name:"刘怪斯3",hash:3}
-                ,{name:"刘怪斯4",hash:4}
-                ,{name:"刘怪斯5",hash:5}
-                ,{name:"刘怪斯6",hash:6}
-                ,{name:"刘怪斯7",hash:7}
-                ,{name:"刘怪斯8",hash:8}
-                ,{name:"刘怪斯9",hash:9}
-                ,{name:"刘怪斯10",hash:10}
-                ,{name:"刘怪斯11",hash:11}
-                ,{name:"刘怪斯12",hash:12}
-                ,{name:"刘怪斯1",hash:1}
-                ,{name:"刘怪斯2",hash:2}
-                ,{name:"刘怪斯3",hash:3}
-                ,{name:"刘怪斯4",hash:4}
-                ,{name:"刘怪斯5",hash:5}
-                ,{name:"刘怪斯6",hash:6}
-                ,{name:"刘怪斯7",hash:7}
-                ,{name:"刘怪斯8",hash:8}
-                ,{name:"刘怪斯9",hash:9}
-                ,{name:"刘怪斯10",hash:10}
-                ,{name:"刘怪斯11",hash:11}
-                ,{name:"刘怪斯12",hash:12}];
-    this.list_opponents(opponents);
+    };
+
+    nebApi.call({
+        chainID: nebState.chain_id,
+        from: account,
+        to: contractAddress,
+        value: 0,
+        // nonce: nonce,
+        gasPrice: 1000000,
+        gasLimit: 2000000,
+        contract: {
+            function: "getWinner",
+            args: JSON.stringify([])
+        },
+    }).then(function (resp) {
+        if (resp && resp.result) {
+            var result = JSON.parse(resp.result);
+            if (result) {
+                opponents = [{name:result.name,hash: parseInt("0x" + hex_md5(result.address))}];
+                this.list_opponents(opponents);
+            }
+        }
+    });
+
+
+    // opponents = [{name:"刘怪斯1",hash:1}
+    //     ,{name:"刘怪斯2",hash:2}
+    //     ,{name:"刘怪斯3",hash:3}
+    //     ,{name:"刘怪斯4",hash:4}
+    //     ,{name:"刘怪斯5",hash:5}
+    //     ,{name:"刘怪斯6",hash:6}
+    //     ,{name:"刘怪斯7",hash:7}
+    //     ,{name:"刘怪斯8",hash:8}
+    //     ,{name:"刘怪斯9",hash:9}
+    //     ,{name:"刘怪斯10",hash:10}
+    //     ,{name:"刘怪斯11",hash:11}
+    //     ,{name:"刘怪斯12",hash:12}
+    //     ,{name:"刘怪斯1",hash:1}
+    //     ,{name:"刘怪斯2",hash:2}
+    //     ,{name:"刘怪斯3",hash:3}
+    //     ,{name:"刘怪斯4",hash:4}
+    //     ,{name:"刘怪斯5",hash:5}
+    //     ,{name:"刘怪斯6",hash:6}
+    //     ,{name:"刘怪斯7",hash:7}
+    //     ,{name:"刘怪斯8",hash:8}
+    //     ,{name:"刘怪斯9",hash:9}
+    //     ,{name:"刘怪斯10",hash:10}
+    //     ,{name:"刘怪斯11",hash:11}
+    //     ,{name:"刘怪斯12",hash:12}];
+    // this.list_opponents(opponents);
+
 }
 Main.prototype.list_opponents = function(opponents){
     $(".opponent-list").html("");
