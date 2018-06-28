@@ -26,6 +26,7 @@ function ToDisplay(source, opponent, display_type, number, hpafter, isCombo, del
 	case eDisplayType.Dead:
 	case eDisplayType.Damage:
 	case eDisplayType.Win:
+	case eDisplayType.WinChallenge:
 		this.next_need_newline = true;
 	default:
 		break;
@@ -44,6 +45,7 @@ function ToDisplay(source, opponent, display_type, number, hpafter, isCombo, del
 		break;
 	case eDisplayType.Punch:
 	case eDisplayType.PunchCombo:
+	case eDisplayType.WinChallenge:
 	case eDisplayType.Win:
 	default:
 		break;
@@ -82,6 +84,8 @@ ToDisplay.prototype.display = function(){
 		case eDisplayType.PunchCombo:
 			this.PunchCombo();
 			break;
+		case eDisplayType.WinChallenge:
+			this.WinChallenge();
 		default:
 			console.log("DisplayType丢失")
 			break;
@@ -143,6 +147,11 @@ ToDisplay.prototype.PunchCombo = function(){
 	var str =  Display.RS([name + "打了一套组合拳",name +"把"+this.opponent.getName()+"按在地上一顿乱打"]);
 	Display.LastP().append(Display.ToSpan(str));
 }
+ToDisplay.prototype.WinChallenge = function(){
+	$("#btn-upload").css({visibility: "visible"})
+	//其他胜利表演
+}
+
 /*目前行动类型
 	Punch
 	PunchCombo。连续拳时判断是否需要新行一直递归向上查找，找到Punch才算不要。
@@ -200,5 +209,6 @@ eDisplayType = {
 	Counter : 6,
 	CriticalHit : 7,
 	PunchCombo: 8,
-	Max : 9,
+	WinChallenge : 9,
+	Max : 10,
 }

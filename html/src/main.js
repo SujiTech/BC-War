@@ -6,6 +6,7 @@ Main.prototype = {
     // p2_wallet : {hash:parseInt("0xbed46142792616f09a9120a724fcb64e"),name:"刘怪斯14"},
     p1_wallet : {hash:parseInt("0x3025e28ba5769d139e1395387a4883941"),name:"袭金亮"},
     p2_wallet : {hash:parseInt("0xbed46142792616f09a9120a724fcb64e"),name:"刘怪斯14"},
+    target_is_last_winner : false,
     battle_times : 0,
     p1_action_list : [],
     p1_now_action_index : 0,
@@ -34,7 +35,6 @@ Main.prototype.init = function(){
     Display.Div = $(".battle-log .content");
     //战斗数据
     this.ResetToFirstBattle()
-    this.init_player_info();
     //调试
     $("#btn-speedup").click(function(){
         main.display_loop();
@@ -43,8 +43,8 @@ Main.prototype.init = function(){
 Main.prototype.rundata = {};
 Main.prototype.Fight = function(){
     //准备界面
+    this.resetBattleLog(true);
     $(".opponent-list").html("");
-    Display.Div.html("");
     this.init_player_info();
     //初始化数据
     this.resetRunData(); //TODO 正式版的调用时间应该在初始化完成后
@@ -53,7 +53,8 @@ Main.prototype.Fight = function(){
     $(".player-info.battle .content").html(this.battle_times);
     //战斗开始
 
-    this.fight_loop(this.p1,this.p2);
+    if(this.fight_loop(this.p1,this.p2) && this.target_is_last_winner)
+        new ToDisplay(null, null, eDisplayType.WinChallenge, null, null, null, 500)
     if(!this.display_looping){
         this.display_looping = true;
         this.display_loop();
@@ -87,7 +88,8 @@ Main.prototype.fight_loop = function(p1,p2){
             console.log("p1获胜")
             new ToDisplay(p2 , null, eDisplayType.Dead);
             new ToDisplay(p1, null, eDisplayType.Win);
-            break;
+
+            return true;
         }
     }
 }
@@ -97,8 +99,9 @@ Main.prototype.display_loop = function(){
         now_display.display();
         this.rundata.display_index++;
     }
-    else
-        setTimeout(this.display_loop,500);
+    else{
+        setTimeout(function(){main.display_loop()},500);
+    }
 }
 Main.prototype.btn_get_opponents = function(){
     var opponents;
@@ -139,6 +142,8 @@ Main.prototype.list_opponents = function(opponents){
         $(".opponent-list").append(Display.ToElem("div",Display.ToElem("button",opponents[i].name),"item"));
         var fn = function(){
             var obj = i;
+            if(i==opponents.length-1)
+                opponents[obj].target_is_last_winner = true;
             $(".opponent-list .item").last().click(function(){
                 main.select_opponents(opponents[obj]);
             })
@@ -151,22 +156,31 @@ Main.prototype.select_opponents = function(obj){
     $("#name-player2").val(obj.name);
     console.log(obj);
     this.p2_wallet = obj;
-    this.init_player_info();
+    this.ResetToFirstBattle();
+    //标记对方是不是最新冠军
+    this.target_is_last_winner = obj.target_is_last_winner;
     //$("#name-player2").obj = ;
 }
 
 //换人的时候也要增加
 Main.prototype.ResetToFirstBattle = function(){
+    $("#btn-upload").css({visibility: "hidden"})
     //界面记录
     this.resetBattleLog();
     //随机数种子
     this.bk_rand = new BkRand(this.p1_wallet.hash, this.p2_wallet.hash);
+    //显示信息
+    this.init_player_info();
+
+    this.resetRunData();
 }
 //重置战斗统计
-Main.prototype.resetBattleLog = function(){
+Main.prototype.resetBattleLog = function(keep_times){
     //对战次数
-    this.battle_times = 0;
+    if(!keep_times)
+        this.battle_times = 0;
     $(".player-info.battle .content").html(this.battle_times);
+    Display.Div.html("");
 }
 Main.prototype.init_player_info = function (){
     this.p1 = new Hero(this.p1_wallet.hash, "hero-me", this.p1_wallet.name, this.bk_rand);

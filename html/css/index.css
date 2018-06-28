@@ -154,6 +154,9 @@ body{
     /*width: 800px;
     height: 300px;*/
 }
+#btn-continue-challenge,#btn-refresh,#btn-levelup,#btn-upload{
+    visibility: hidden;
+}
 .steins-group{
     background-color: #fff;
     background: linear-gradient(to  right, rgba(0,0,255,0), white   , white, white    , rgba(0,0,255,0));
