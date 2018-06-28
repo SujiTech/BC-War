@@ -1,4 +1,4 @@
-function Hero(hashcode1,tag,hashcode2){
+function Hero(hashcode1,tag,name,_bkRand){
     this.hp  = 0;   //生命值（初版为耗尽死亡
     this.ap  = 0;   //怒气值 决定特殊攻击使用（初版为纯娱乐效果
     this.atk = 0;   //伤害值
@@ -8,22 +8,22 @@ function Hero(hashcode1,tag,hashcode2){
     this.skl = 0;
 
 
-    this.name = hashcode1;
+    this.name = name;
     //存储数据，避免运算时修改
     this.data = {};
     this.data.tag = tag;
 
-    this.seed = parseInt("0x"+hex_md5(this.name));
-    this.init();
+    this.seed = hashcode1;
+    this.init(_bkRand);
 }
-Hero.prototype.init = function(){
-    this.data.hp  = Math.round(BkRand.seededRandom(this,750,1000));
+Hero.prototype.init = function(_bkRand){
+    this.data.hp  = Math.round(_bkRand.seededRandom(this,750,1000));
     this.data.ap  = 0;
-    this.data.atk = Math.round(BkRand.seededRandom(this,39,100));
-    this.data.def = Math.round(BkRand.seededRandom(this,39,100));
-    this.data.luk = Math.round(BkRand.seededRandom(this,39,100));
-    this.data.spd = Math.round(BkRand.seededRandom(this,39,100));
-    this.data.skl = Math.round(BkRand.seededRandom(this,39,100));
+    this.data.atk = Math.round(_bkRand.seededRandom(this,39,100));
+    this.data.def = Math.round(_bkRand.seededRandom(this,39,100));
+    this.data.luk = Math.round(_bkRand.seededRandom(this,39,100));
+    this.data.spd = Math.round(_bkRand.seededRandom(this,39,100));
+    this.data.skl = Math.round(_bkRand.seededRandom(this,39,100));
     this.readAttri();
 }
 Hero.prototype.readAttri = function() {
