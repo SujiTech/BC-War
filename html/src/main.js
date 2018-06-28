@@ -43,6 +43,9 @@ Main.prototype.init = function(){
                 //ResetToFirstBattle();Fight();
             }
         });
+    $("#btn-upload").click({function(){
+        main.upload_winner(main.battle_times);
+    }});
     //$("#btn-get-opponents").dblclick(dbclk_opponents);
     Display.Div = $(".battle-log .content");
     //战斗数据
