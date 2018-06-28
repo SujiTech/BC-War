@@ -11,7 +11,7 @@ function ToDisplay(source, opponent, display_type, number, hpafter, isCombo, del
 	this.type = display_type;
 	this.delay = delay||1000;
 	this.id = this.count++;
-	this.pre = rundata.display_list[rundata.display_list.length-1];
+	this.pre = main.rundata.display_list[main.rundata.display_list.length-1];
 	this.next_need_newline = false;
 
 	//是否需要新行
@@ -48,7 +48,7 @@ function ToDisplay(source, opponent, display_type, number, hpafter, isCombo, del
 	default:
 		break;
 	}
-	rundata.display_list[rundata.display_list.length] = this;
+	main.rundata.display_list[main.rundata.display_list.length] = this;
 }
 //静态成员变量
 ToDisplay.prototype.count = 0;
@@ -87,7 +87,7 @@ ToDisplay.prototype.display = function(){
 			break;
 	}
 	Display.Div.animate({scrollTop: Display.Div.height()}, 10);
-	setTimeout(display_loop,this.delay);
+	setTimeout(function(){main.display_loop()},this.delay);
 }
 ToDisplay.prototype.Punch = function() {
 	var str = this.source.getName();
