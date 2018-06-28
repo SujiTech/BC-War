@@ -6,10 +6,15 @@ function init(){
         });
     //$("#btn-get-opponents").dblclick(dbclk_opponents);
     Display.Div = $(".battle-log .content");
+
+    console.log(getResult(3));
+
+    ResetToFirstBattle();
     resetBattleLog();
     init_player_info();
     //调试
     $("#btn-speedup").click(display_loop);
+
 }
 var gl = {
     p1 : null,
