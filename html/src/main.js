@@ -165,17 +165,17 @@ var resetRunData = function(){
     rundata.display_list = gl.display_list.concat();
 }
 //选择敌人后调用
-var resetRandomSeed = function(){
+var resetRandomSeed = function(hash_p1,hash_p2){
     BkRand.OrderCode = {
-        seed:39
+        seed:hash_p1+hash_p2
     };
     BkRand.OperationCode = {
-        seed:55
+        seed:hash_p1-hash_p2
     };
     BkRand.TechniqueCode = {
-        seed:77
+        seed:hash_p1*hash_p2
     };
     BkRand.IntensityCode = {
-        seed:66
+        seed:hash_p1/hash_p2
     };
 }

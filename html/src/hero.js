@@ -13,7 +13,7 @@ function Hero(hashcode1,tag,hashcode2){
     this.data = {};
     this.data.tag = tag;
 
-    this.seed = parseInt("0x"+hex_md5(this.name));
+    this.seed = hashcode1;
     this.init();
 }
 Hero.prototype.init = function(){
