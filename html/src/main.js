@@ -2,16 +2,19 @@ function init(){
     $("#btn-challenge").click(Fight);
     $("#btn-get-opponents").click(btn_get_opponents);
     $(".temp-input input").bind('keypress',function(event){
-            if(event.keyCode == "13"){ResetToFirstBattle();Fight();}
+            if(event.keyCode == "13"){
+                console.log("功能重做中");
+                //ResetToFirstBattle();Fight();
+            }
         });
     //$("#btn-get-opponents").dblclick(dbclk_opponents);
     Display.Div = $(".battle-log .content");
 
     console.log(getResult(3));
 
-    ResetToFirstBattle();
-    resetBattleLog();
-    init_player_info();
+    //战斗数据
+    ResetToFirstBattle()
+    init_player_info(gl,rundata);
     //调试
     $("#btn-speedup").click(display_loop);
 
@@ -19,6 +22,10 @@ function init(){
 var gl = {
     p1 : null,
     p2 : null,
+    // p1_wallet : {hash:parseInt("0x3025e28ba5769d139e1395387a488394"),name:"袭金亮"},
+    // p2_wallet : {hash:parseInt("0xbed46142792616f09a9120a724fcb64e"),name:"刘怪斯14"},
+    p1_wallet : {hash:parseInt("0x3025e28ba5769d139e1395387a4883941"),name:"袭金亮"},
+    p2_wallet : {hash:parseInt("0xbed46142792616f09a9120a724fcb64e"),name:"刘怪斯14"},
     battle_times : 0,
     p1_action_list : [],
     p1_now_action_index : 0,
@@ -27,20 +34,22 @@ var gl = {
     display_index : 0,
     display_list : [],
     display_looping : false,
+    bk_rand :null,
 }
 var rundata = {};
 var Fight = function(){
     //准备界面
     $(".opponent-list").html("");
     Display.Div.html("");
-    init_player_info();
+    init_player_info(gl,rundata);
     //初始化数据
-    resetRunData(); //TODO 正式版的调用时间应该在初始化完成后
+    resetRunData(gl,rundata); //TODO 正式版的调用时间应该在初始化完成后
     //统计战斗次数
     gl.battle_times ++;
     $(".player-info.battle .content").html(gl.battle_times);
     //战斗开始
-    fight_loop();
+
+    fight_loop(gl.p1,gl.p2,rundata);
     if(!gl.display_looping){
         gl.display_looping = true;
         display_loop();
@@ -48,31 +57,32 @@ var Fight = function(){
 
 }
 
-function fight_loop(){
+function fight_loop(p1,p2,rundata){
     var res,action_type,success_rate;
     var acitve,passive;
+    var battle = new Battle(gl.bk_rand);
     while(true){
-        res = Battle.generateActionList();
+        res = battle.generateActionList(p1,p2,rundata);
         if(res){
             rundata.p1_now_action_index++;
-            acitve = gl.p1;
-            passive = gl.p2;
+            acitve = p1;
+            passive = p2;
         }
         else {
             rundata.p2_now_action_index++;
-            acitve = gl.p2;
-            passive = gl.p1;
+            acitve = p2;
+            passive = p1;
         }
-        Battle.generateAction(acitve, passive);
-        if(gl.p1.hp==0){
+        battle.generateAction(acitve, passive);
+        if(p1.hp==0){
             console.log("p2获胜")
-            new ToDisplay(gl.p1 , null, eDisplayType.Dead);
-            new ToDisplay(gl.p2, null, eDisplayType.Win);
+            new ToDisplay(p1 , null, eDisplayType.Dead);
+            new ToDisplay(p2, null, eDisplayType.Win);
             break;
-        }else if(gl.p2.hp==0){
+        }else if(p2.hp==0){
             console.log("p1获胜")
-            new ToDisplay(gl.p2 , null, eDisplayType.Dead);
-            new ToDisplay(gl.p1, null, eDisplayType.Win);
+            new ToDisplay(p2 , null, eDisplayType.Dead);
+            new ToDisplay(p1, null, eDisplayType.Win);
             break;
         }
     }
@@ -135,16 +145,16 @@ function select_opponents(obj){
         .val($(obj).data("data").name);
     $("#name-player2").data("data",$(obj).data("data"))
         .val($(obj).data("data").name);
-    init_player_info();
+    init_player_info(gl,rundata);
     //$("#name-player2").obj = ;
 }
 
-
+//换人的时候也要增加
 function ResetToFirstBattle(){
     //界面记录
     resetBattleLog();
     //随机数种子
-    resetRandomSeed();
+    gl.bk_rand = new BkRand(gl.p1_wallet.hash, gl.p2_wallet.hash);
 }
 //重置战斗统计
 function resetBattleLog(){
@@ -152,30 +162,15 @@ function resetBattleLog(){
     gl.battle_times = 0;
     $(".player-info.battle .content").html(gl.battle_times);
 }
-function init_player_info (){
-    gl.p1 = new Hero($("#name-player1").val(),"hero-me");
-    gl.p2 = new Hero($("#name-player2").val(),"hero-target");
+function init_player_info (gl,rundata){
+    gl.p1 = new Hero(gl.p1_wallet.hash, "hero-me", gl.p1_wallet.name, gl.bk_rand);
+    gl.p2 = new Hero(gl.p2_wallet.hash, "hero-target", gl.p2_wallet.name, gl.bk_rand);
 }
-var resetRunData = function(){
+var resetRunData = function(gl,rundata){
     rundata.p1_action_list = gl.p1_action_list.concat();
     rundata.p1_now_action_index = gl.p1_now_action_index;
     rundata.p2_action_list = gl.p2_action_list.concat();
     rundata.p2_now_action_index = gl.p2_now_action_index;
     rundata.display_index = gl.display_index;
     rundata.display_list = gl.display_list.concat();
-}
-//选择敌人后调用
-var resetRandomSeed = function(hash_p1,hash_p2){
-    BkRand.OrderCode = {
-        seed:hash_p1+hash_p2
-    };
-    BkRand.OperationCode = {
-        seed:hash_p1-hash_p2
-    };
-    BkRand.TechniqueCode = {
-        seed:hash_p1*hash_p2
-    };
-    BkRand.IntensityCode = {
-        seed:hash_p1/hash_p2
-    };
 }
