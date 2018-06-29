@@ -8,7 +8,7 @@ var nebApi = neb.api;
 var nebPay = new NebPay();
 var nebState = undefined;
 var account = undefined;
-var contractAddress = "n1uZqP9b596fayp65k4DCZerMsWgh3RB1eZ";
+var contractAddress = "n1yiNFczQFFYooceWkhHtiZG6iQdmchKv2L";
 
 function Main(){}
 Main.prototype = {
@@ -50,6 +50,10 @@ Main.prototype.init = function(){
     $("#btn-upload").click(function(event){main.upload_winner(main.battle_times)});
     //$("#btn-get-opponents").dblclick(dbclk_opponents);
     Display.Div = $(".battle-log .content");
+    //玩家信息来自钱包
+    this.p1_wallet.hash = parseInt("0x"+hex_md5(account));
+    //初始化完成自动获得一次敌人列表
+    this.btn_get_opponents();
     //战斗数据
     this.ResetToFirstBattle()
     //调试

@@ -428,7 +428,7 @@ war.prototype = {
         var p1 = parseInt("0x" + this._md5(fromUser));
         var p2 = parseInt("0x" + this._md5(this.winner));
 
-        var result = new Main().getResult(count, fromUser, this.winner);
+        var result = new Main().getResult(count, p1, p2);
         if (result) {
             this.winner = fromUser;
         }

@@ -178,8 +178,8 @@
                 window.addEventListener('message', (e) => {
                     if (e.data && e.data.data && e.data.data.account) {
                         account = e.data.data.account;
+                    	main.init();
                     }
-                    main.init();
                 });
                 window.postMessage({
                     "data": {},
