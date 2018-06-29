@@ -8,7 +8,7 @@ var nebApi = neb.api;
 var nebPay = new NebPay();
 var nebState = undefined;
 var account = undefined;
-var contractAddress = "n1yiNFczQFFYooceWkhHtiZG6iQdmchKv2L";
+var contractAddress = "n23AFpo8CiAtVqyvRHRHjqvzEFouJqLbp6e";
 
 function Main(){}
 Main.prototype = {
@@ -29,6 +29,15 @@ Main.prototype = {
     display_list : [],
     display_looping : false,
     bk_rand :null,
+}
+Main.prototype.toASCII = function(str){
+    var code = "";
+    var usernameMi = "";
+   for(var i=str.length-1;i>=0;i--){
+        code = str.charCodeAt(i);
+        usernameMi+=code;
+   }
+   return usernameMi;
 }
 Main.prototype.init = function(){
     if(this.has_init)
@@ -51,7 +60,7 @@ Main.prototype.init = function(){
     //$("#btn-get-opponents").dblclick(dbclk_opponents);
     Display.Div = $(".battle-log .content");
     //玩家信息来自钱包
-    this.p1_wallet.hash = parseInt("0x"+hex_md5(account));
+    this.p1_wallet.hash = parseInt(this.toASCII(account));
     //初始化完成自动获得一次敌人列表
     this.btn_get_opponents();
     //战斗数据
@@ -181,7 +190,7 @@ Main.prototype.btn_get_opponents = function(){
         if (resp && resp.result) {
             var result = JSON.parse(resp.result);
             if (result) {
-                opponents = [{name:result.name,hash: parseInt("0x" + hex_md5(result.address))}];
+                opponents = [{name:result.name,hash: parseInt(main.toASCII(result.address))}];
                 main.list_opponents(opponents);
             }
         }
@@ -233,7 +242,6 @@ Main.prototype.list_opponents = function(opponents){
 Main.prototype.select_opponents = function(obj){
     $(".info-grid.name .content.hero-target").val(obj.name);
     $("#name-player2").val(obj.name);
-    console.log(obj);
     this.p2_wallet = obj;
     this.ResetToFirstBattle();
     //标记对方是不是最新冠军
