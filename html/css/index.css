@@ -1,3 +1,35 @@
+.introduction{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: url(../img/bg.jpg) center no-repeat fixed #383838;
+    z-index: 100;
+    left: 0;
+    top: 0;
+}
+.introduction>.bg{
+    background-color: rgba(56,56,56,0.9);
+    margin-top: -21px;
+    padding-top: 200px;
+    width: 100%;
+    height: 100%;
+}
+.introduction .vessel{
+    width: 800px;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.introduction h1,.introduction p:last-child{
+    text-align: center;
+}
+.introduction p{
+    text-indent: 32px;
+    line-height: 32px;
+}
+.introduction{
+    color: #fff;
+}
 p{
     -webkit-margin-before: 0;
     -webkit-margin-after: 0;
@@ -52,21 +84,43 @@ body{
     border-bottom: 1px #aaa solid;
     border-left: 1px #aaa solid;
     display: inline-block;
+
+    border: 0.5rem outset rgb(36,57,114);
 }
 /*有完整数据体系后应该隐藏*/
 .temp-input {
-    background-color: #fff;
+    background-color: rgba(36,57,114,0.2);
     position: fixed;
+    font-size: 15px;
     left: 5px;
-    height: 100px;
+    bottom: 5px;
+    color: white;
     text-align: center;
 }
-.temp-input input{
+.temp-input button{
     display: block;
+    margin-left: 50px;
+    margin-top: 5px;
+}
+#btn-custom-name,#btn-custom-opponent{
+    border-color: rgb(191,226,232);
+    color: rgb(191,226,232);
+    font-size: 10px;
+    height: 20px;
+    line-height: 19px;
+    width: 100px;
+}
+.temp-input input{
+    margin-top: -15px;
+    display: block;
+    background-color: rgba(36,57,114,0.2);
+    color: white;
     height: calc(50% - 6px);
-    width: 96px;
+    width: 200px;
+    font-size: 20px;
     height: 50px;
     text-align: center;
+    border-radius: 0.5em;
 }
 .info-grid{
     display: inline-block;
@@ -75,7 +129,7 @@ body{
     vertical-align: middle;
     text-align: center;
     height: 100%;
-    width: 100px;
+    width: 118px;
 }
 /*.info-grid>.item-name{
     border-top: 1px #aaa solid;
@@ -94,7 +148,7 @@ body{
     position: absolute;
     margin-top:-5px;
     height: 5px;
-    width: 100px;
+    width: 118px;
     background-color: #aaa;
     /*border-top: 1px #aaa solid;
     border-bottom: 1px #aaa solid;*/
@@ -126,10 +180,12 @@ body{
     /*border-left: 7px #169ace solid;
     border-right: 16px #169ace solid;
     border-bottom: 1px #169ace solid;*/
-    border-style: solid;
-    border-color: #169ace;
+    border-style: outset;
+    border-color: rgb(36,57,114);
     border-width: 1px 16px 1px 7px;
+    /*border: 0.5rem outset #169ace;*/
     margin: 5px;
+    overflow: scroll;
 }
 .battle-log .title{
     margin-bottom: 10px;
@@ -140,7 +196,7 @@ body{
 }
 .battle-log .content{
     overflow-y: scroll;
-    height: calc(100% - 31px);
+    /*height: calc(100% - 31px);*/
 }
 
 
@@ -185,6 +241,7 @@ body{
 }
 .bottomline .debug p{
     text-align: center;
+    color: white;
 }
 .bottomline .comment{
     text-align: center;
@@ -198,6 +255,11 @@ body{
     margin-right: auto;
     margin-left: auto;
 }
+.opponent-list .title{
+    font-size: 40px;
+    color: white;
+    background-color: rgb(36,57,114,0.5);
+}
 .opponent-list .item{
     width: 100px;
     height: 50px;
@@ -209,4 +271,73 @@ body{
 .opponent-list .item button{
     width: 100%;
     height: 100%;
+}
+
+
+.more-info{
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+.more-info .content{
+    padding: 30px;
+    background-color: rgba(0,0,0,0.5);
+    width: 600px;
+    color: #fff;
+    margin-top: 300px;
+    height: fit-content;
+    border-radius: 12px;
+    border: 0.5rem outset rgb(36,57,114);
+    text-align: center;
+}
+.more-info .content a:link,.more-info .content a:hover{
+    color: #fff;
+}
+.more-info .content a:visited{
+    color: #aaa;
+}
+.more-info .content p{
+    text-align: left;
+}
+.intend{
+    text-indent: 32px;
+}
+
+.init-unfinish{
+    z-index: 90;
+    background: url(../img/bg.jpg) center no-repeat fixed #383838;
+    display: flex;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    color: #fff;
+}
+.middle-flex{
+    display: flex;
+    flex-direction: column;
+}
+.init-unfinish .content{
+    background-color: rgba(36,57,114,0.8);
+    font-size: 40px;
+    padding: 10px;
+}
+
+
+
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

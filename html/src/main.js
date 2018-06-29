@@ -43,35 +43,13 @@ Main.prototype.init = function(){
     if(this.has_init)
         return;
     this.has_init = true;
-    var main = this;
-    $("#btn-challenge").click(function(){
-        main.Fight();
-    });
-    $("#btn-get-opponents").click(function(){
-        main.btn_get_opponents();
-    });
-    $(".temp-input input").bind('keypress',function(event){
-            if(event.keyCode == "13"){
-                console.log("功能重做中");
-                //ResetToFirstBattle();Fight();
-            }
-        });
     $("#btn-upload").click(function(event){main.upload_winner(main.battle_times)});
-    //$("#btn-get-opponents").dblclick(dbclk_opponents);
-    Display.Div = $(".battle-log .content");
     //玩家信息来自钱包
     this.p1_wallet.hash = parseInt(this.toASCII(account));
     //初始化完成自动获得一次敌人列表
     this.btn_get_opponents();
     //战斗数据
     this.ResetToFirstBattle()
-    //调试
-    $("#btn-continue-challenge,#btn-refresh,#btn-levelup,#btn-upload").css({
-        visibility:"hidden"
-    })
-    $("#btn-speedup").click(function(){
-        main.display_loop();
-    });
 }
 Main.prototype.rundata = {};
 Main.prototype.Fight = function(){
@@ -147,6 +125,7 @@ Main.prototype.upload_winner = function(times) {
         times: times
     }]);
     var options = {
+        //gasLimit: 5000000,
         qrcode: {
             showQRCode: false,      //是否显示二维码信息
             container: undefined,    //指定显示二维码的canvas容器，不指定则生成一个默认canvas
@@ -173,7 +152,7 @@ Main.prototype.btn_get_opponents = function(){
         name:"刘怪斯",
         hash: 1
     };
-
+    $(".opponent-list").html("<div class=\"title\">正在获取对手列表……</div>");
     nebApi.call({
         chainID: nebState.chain_id,
         from: account,
@@ -181,7 +160,7 @@ Main.prototype.btn_get_opponents = function(){
         value: 0,
         // nonce: nonce,
         gasPrice: 1000000,
-        gasLimit: 5000000,
+        gasLimit: 2000000,
         contract: {
             function: "getWinner",
             args: JSON.stringify([])
@@ -225,9 +204,9 @@ Main.prototype.btn_get_opponents = function(){
 
 }
 Main.prototype.list_opponents = function(opponents){
-    $(".opponent-list").html("");
+    $(".opponent-list").html("<div class=\"title\">擂主：</div>");
     for (var i = 0; i < opponents.length; i++) {
-        $(".opponent-list").append(Display.ToElem("div",Display.ToElem("button",opponents[i].name),"item"));
+        $(".opponent-list").append(Display.ToElem("div",Display.ToElem("button",(opponents[i].name||"无名氏")),"item"));
         var fn = function(){
             var obj = i;
             if(i==opponents.length-1)
@@ -269,6 +248,7 @@ Main.prototype.resetBattleLog = function(keep_times){
     $(".player-info.battle .content").html(this.battle_times);
     Display.Div.html("");
 }
+//仅连续战斗课直接调用，否则会引起随机种子问题
 Main.prototype.init_player_info = function (){
     this.p1 = new Hero(this.p1_wallet.hash, "hero-me", this.p1_wallet.name, this.bk_rand);
     this.p2 = new Hero(this.p2_wallet.hash, "hero-target", this.p2_wallet.name, this.bk_rand);
