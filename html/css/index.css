@@ -3,7 +3,9 @@ p{
     -webkit-margin-after: 0;
 }
 body{
-    background-color: #000;
+    //background-color: #000;
+    background: url(../img/bg.jpg) center no-repeat fixed #0D1520;
+    background-size: cover;
     /*background: linear-gradient(to bottom right, blue, white);*/
 }
 .bg-body{

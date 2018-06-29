@@ -3,21 +3,22 @@ var HttpRequest = require("nebulas").HttpRequest;
 var Neb = require("nebulas").Neb;
 var NebPay = require("nebpay");
 var neb = new Neb();
-neb.setRequest(new HttpRequest("https://testnet.nebulas.io"));
+neb.setRequest(new HttpRequest("https://mainnet.nebulas.io"));
 var nebApi = neb.api;
 var nebPay = new NebPay();
 var nebState = undefined;
 var account = undefined;
-var contractAddress = "";
+var contractAddress = "n1uZqP9b596fayp65k4DCZerMsWgh3RB1eZ";
 
 function Main(){}
 Main.prototype = {
     p1 : null,
     p2 : null,
+    has_init : false,
     // p1_wallet : {hash:parseInt("0x3025e28ba5769d139e1395387a488394"),name:"袭金亮"},
     // p2_wallet : {hash:parseInt("0xbed46142792616f09a9120a724fcb64e"),name:"刘怪斯14"},
-    p1_wallet : {hash:parseInt("0x3025e28ba5769d139e1395387a4883941"),name:"袭金亮"},
-    p2_wallet : {hash:parseInt("0xbed46142792616f09a9120a724fcb64e"),name:"刘怪斯14"},
+    p1_wallet : {hash:parseInt("0x3025e28ba5769d139e1395387a4883941"),name:"鱼香肉丝"},
+    p2_wallet : {hash:parseInt("0xbed46142792616f09a9120a724fcb64e"),name:"宫保鸡丁"},
     target_is_last_winner : false,
     battle_times : 0,
     p1_action_list : [],
@@ -30,6 +31,9 @@ Main.prototype = {
     bk_rand :null,
 }
 Main.prototype.init = function(){
+    if(this.has_init)
+        return;
+    this.has_init = true;
     var main = this;
     $("#btn-challenge").click(function(){
         main.Fight();
@@ -43,9 +47,7 @@ Main.prototype.init = function(){
                 //ResetToFirstBattle();Fight();
             }
         });
-    $("#btn-upload").click({function(){
-        main.upload_winner(main.battle_times);
-    }});
+    $("#btn-upload").click(function(event){main.upload_winner(main.battle_times)});
     //$("#btn-get-opponents").dblclick(dbclk_opponents);
     Display.Div = $(".battle-log .content");
     //战斗数据
@@ -173,7 +175,7 @@ Main.prototype.btn_get_opponents = function(){
             var result = JSON.parse(resp.result);
             if (result) {
                 opponents = [{name:result.name,hash: parseInt("0x" + hex_md5(result.address))}];
-                this.list_opponents(opponents);
+                main.list_opponents(opponents);
             }
         }
     });
