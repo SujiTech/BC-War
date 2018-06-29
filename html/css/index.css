@@ -157,7 +157,7 @@ body{
     height: 300px;*/
 }
 #btn-continue-challenge,#btn-refresh,#btn-levelup,#btn-upload{
-    visibility: hidden;
+    visibility: visible;
 }
 .steins-group{
     background-color: #fff;

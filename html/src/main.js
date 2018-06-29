@@ -53,6 +53,9 @@ Main.prototype.init = function(){
     //战斗数据
     this.ResetToFirstBattle()
     //调试
+    $("#btn-continue-challenge,#btn-refresh,#btn-levelup,#btn-upload").css({
+        visibility:"hidden"
+    })
     $("#btn-speedup").click(function(){
         main.display_loop();
     });
