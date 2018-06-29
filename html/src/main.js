@@ -125,6 +125,7 @@ Main.prototype.upload_winner = function(times) {
         times: times
     }]);
     var options = {
+        //gasLimit: 5000000,
         qrcode: {
             showQRCode: false,      //是否显示二维码信息
             container: undefined,    //指定显示二维码的canvas容器，不指定则生成一个默认canvas
@@ -159,7 +160,7 @@ Main.prototype.btn_get_opponents = function(){
         value: 0,
         // nonce: nonce,
         gasPrice: 1000000,
-        gasLimit: 5000000,
+        gasLimit: 2000000,
         contract: {
             function: "getWinner",
             args: JSON.stringify([])
