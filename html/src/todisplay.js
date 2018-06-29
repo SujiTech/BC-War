@@ -90,7 +90,7 @@ ToDisplay.prototype.display = function(){
 			console.log("DisplayType丢失")
 			break;
 	}
-	Display.Div.animate({scrollTop: Display.Div.scrollTop()}, 10);
+	$(".battle-log").animate({scrollTop: Display.Div.height()}, 10);
 	setTimeout(function(){main.display_loop()},this.delay);
 }
 ToDisplay.prototype.Punch = function() {
