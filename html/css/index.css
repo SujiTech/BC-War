@@ -89,18 +89,38 @@ body{
 }
 /*有完整数据体系后应该隐藏*/
 .temp-input {
-    background-color: #fff;
+    background-color: rgba(36,57,114,0.2);
     position: fixed;
+    font-size: 15px;
     left: 5px;
-    height: 100px;
+    bottom: 5px;
+    color: white;
     text-align: center;
 }
-.temp-input input{
+.temp-input button{
     display: block;
+    margin-left: 50px;
+    margin-top: 5px;
+}
+#btn-custom-name,#btn-custom-opponent{
+    border-color: rgb(191,226,232);
+    color: rgb(191,226,232);
+    font-size: 10px;
+    height: 20px;
+    line-height: 19px;
+    width: 100px;
+}
+.temp-input input{
+    margin-top: -15px;
+    display: block;
+    background-color: rgba(36,57,114,0.2);
+    color: white;
     height: calc(50% - 6px);
-    width: 96px;
+    width: 200px;
+    font-size: 20px;
     height: 50px;
     text-align: center;
+    border-radius: 0.5em;
 }
 .info-grid{
     display: inline-block;
@@ -128,7 +148,7 @@ body{
     position: absolute;
     margin-top:-5px;
     height: 5px;
-    width: 100px;
+    width: 118px;
     background-color: #aaa;
     /*border-top: 1px #aaa solid;
     border-bottom: 1px #aaa solid;*/

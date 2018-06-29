@@ -185,13 +185,13 @@ Display.RS = function(arr, cls)
     return this.ToSpan(arr[Math.floor(Math.random()*arr.length)],cls);
 }
 Display.HPBar = function(tag, number, maxhp, duration){
-	var hpwidth = number/maxhp * 100;
+	var hpwidth = number/maxhp * 118;
 	$(".hpbar."+tag).animate({
 		width:hpwidth
 	},duration);
 }
 Display.HPBarQ = function(tag, hp, maxhp){
-	var hpwidth = hp/maxhp * 100;
+	var hpwidth = hp/maxhp * 118;
 	$(".hpbar."+tag+" .back").animate({
 		width:hpwidth
 	},1000);

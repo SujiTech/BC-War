@@ -21,12 +21,30 @@ function UI_init(){
     $("#btn-get-opponents").click(function(){
         main.btn_get_opponents();
     });
-    $(".temp-input input").bind('keypress',function(event){
+    $("#name-player1").bind('keypress',function(event){
         if(event.keyCode == "13"){
-            console.log("功能重做中");
-            //ResetToFirstBattle();Fight();
+            //改名API
+            custom_name(this);
         }
     });
+    $("#name-player2").bind('keypress',function(event){
+        if(event.keyCode == "13"){
+            //自定义对手
+            custom_opponent(this);
+            main.p2_wallet.name = $(this).val();
+            main.p2_wallet.hash = parseInt("0x"+hex_md5($(this).val()));
+            main.ResetToFirstBattle();
+        }
+    });
+    $("#btn-custom-name").click(function(){
+    	custom_name($("#name-player1"));
+    	}
+    )
+    $("#btn-custom-opponent").click(function(){
+		custom_opponent($("#name-player2"));
+    	}
+    )
+
     //$("#btn-get-opponents").dblclick(dbclk_opponents);
     Display.Div = $(".battle-log .content");
     //调试
@@ -34,5 +52,15 @@ function UI_init(){
         main.display_loop();
     });
 
-    $(".interface button").addClass("button button-large button-plain button-border button-box");
+    $(".interface button,#btn-custom-name,#btn-custom-opponent").addClass("button button-large button-plain button-border button-box");
+}
+
+function custom_name(obj){
+    main.p1_wallet.name = $(obj).val();
+    main.ResetToFirstBattle();
+}
+function custom_opponent(obj){
+    main.p2_wallet.name = $(obj).val();
+    main.p2_wallet.hash = parseInt("0x"+hex_md5($(obj).val()));
+    main.ResetToFirstBattle();
 }

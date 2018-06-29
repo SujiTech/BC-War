@@ -247,6 +247,7 @@ Main.prototype.resetBattleLog = function(keep_times){
     $(".player-info.battle .content").html(this.battle_times);
     Display.Div.html("");
 }
+//仅连续战斗课直接调用，否则会引起随机种子问题
 Main.prototype.init_player_info = function (){
     this.p1 = new Hero(this.p1_wallet.hash, "hero-me", this.p1_wallet.name, this.bk_rand);
     this.p2 = new Hero(this.p2_wallet.hash, "hero-target", this.p2_wallet.name, this.bk_rand);
