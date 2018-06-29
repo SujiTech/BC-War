@@ -144,7 +144,35 @@ Main.prototype.upload_winner = function(times) {
     };
     nebPay.call(to, value, callFunction, callArgs, options);
 }
+//times: 次数
+Main.prototype.upload_nickname = function(nickname) {
 
+    var to = contractAddress;
+    var value = "0";
+    var callFunction = "setUser";
+    var callArgs =  JSON.stringify([{
+        name: nickname
+    }]);
+    var options = {
+        //gasLimit: 5000000,
+        qrcode: {
+            showQRCode: false,      //是否显示二维码信息
+            container: undefined,    //指定显示二维码的canvas容器，不指定则生成一个默认canvas
+            completeTip: undefined, // 完成支付提示
+            cancelTip: undefined // 取消支付提示
+        },
+        callback: NebPay.config.testnetUrl, //在测试网查询
+        listener: function (value) {
+
+            if (typeof value === 'string') {
+                //用户取消了支付
+                return
+            }
+            //支付已经提交，状态未知
+        }
+    };
+    nebPay.call(to, value, callFunction, callArgs, options);
+}
 Main.prototype.btn_get_opponents = function(){
     var opponents;
     //请求数据

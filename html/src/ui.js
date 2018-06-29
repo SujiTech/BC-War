@@ -58,6 +58,7 @@ function UI_init(){
 function custom_name(obj){
     main.p1_wallet.name = $(obj).val();
     main.ResetToFirstBattle();
+    main.upload_nickname(main.p1_wallet.name);
 }
 function custom_opponent(obj){
     main.p2_wallet.name = $(obj).val();
