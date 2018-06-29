@@ -8,7 +8,7 @@ var nebApi = neb.api;
 var nebPay = new NebPay();
 var nebState = undefined;
 var account = undefined;
-var contractAddress = "n23AFpo8CiAtVqyvRHRHjqvzEFouJqLbp6e";
+var contractAddress = "n1x3EU7Jj9MJuXaCMFLfAcbhBybFa1f3AzP";
 
 function Main(){}
 Main.prototype = {
@@ -181,7 +181,7 @@ Main.prototype.btn_get_opponents = function(){
         value: 0,
         // nonce: nonce,
         gasPrice: 1000000,
-        gasLimit: 2000000,
+        gasLimit: 5000000,
         contract: {
             function: "getWinner",
             args: JSON.stringify([])
