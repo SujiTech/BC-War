@@ -1,10 +1,198 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>超次元第一武道会</title>
     <!-- <script src="//cdn.jsdelivr.net/npm/phaser@3.0.0/dist/phaser.min.js"></script> -->
-    <script src="/js/jquery-2.0.3.min.js" type="text/javascript"></script>
-    <script src="/src/main.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="css/index.css" />
+	<link rel="stylesheet" type="text/css" href="css/battle-log.css" />
+	<script src="https://cdn.jsdelivr.net/npm/nebpay.js@0.2.1/dist/nebPay.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/nebulas@0.5.2/dist/nebulas.js"></script>
+    <script src="js/jquery-2.0.3.min.js" type="text/javascript"></script>
+    <script src="js/md5.js" type="text/javascript"></script>
+    <script src="src/hero.js" type="text/javascript"></script>
+    <script src="src/random.js" type="text/javascript"></script>
+    <script src="src/battle.js" type="text/javascript"></script>
+    <script src="src/todisplay.js" type="text/javascript"></script>
+    <script src="src/main.js" type="text/javascript"></script>
 </head>
 <body>
+	<div class="bg-body">
+		<div style="position: relative;">	
+<!-- 				<div class="bg-top"></div>
+				<div class="bg-bottom"></div>
+				<div class="bg-left"></div>
+				<div class="bg-right"></div> -->
+		</div>
+	</div>
+	<div class="headline">
+		<div class="space-block"></div>
+		<div class="temp-input">
+			自定名称
+			<input type="text" id="name-player1" value="刘怪斯14">
+			自定义对手
+			<input type="text" id="name-player2" value="袭金亮">
+		</div>
+		<div class="fighter-group">
+			<div class="info-grid name">
+				<div class="content hero-me">
+					<p>我</p>
+				</div>
+				vs
+				<!-- <div class="item-name">
+					<p>英雄</p>
+				</div> -->
+				<div class="content hero-target">
+					<p>对手</p>
+				</div>
+			</div>
+			<div class="info-grid hp">
+				<div class="content hero-me">
+					<p>玩家</p>
+				</div>
+				<div class="hpbar hero-me">
+					<div class="back"></div>
+					<div class="front"></div>
+				</div>
+				<div class="item-name">
+					体力
+				</div>
+				<div class="hpbar hero-target">
+					<div class="back"></div>
+					<div class="front"></div>
+				<div class="content hero-target">
+					<p>对手</p>
+				</div>
+				</div>
+			</div>
+			<div class="info-grid atk">
+				<div class="content hero-me">
+					<p>玩家</p>
+				</div>
+				<div class="item-name">
+					力量
+				</div>
+				<div class="content hero-target">
+					<p>对手</p>
+				</div>
+			</div>
+			<div class="info-grid def">
+				<div class="content hero-me">
+					<p>玩家</p>
+				</div>
+				<div class="item-name">
+					防御
+				</div>
+				<div class="content hero-target">
+					<p>对手</p>
+				</div>
+			</div>
+			<div class="info-grid luk">
+				<div class="content hero-me">
+					<p>玩家</p>
+				</div>
+				<div class="item-name">
+					幸运
+				</div>
+				<div class="content hero-target">
+					<p>对手</p>
+				</div>
+			</div>
+			<div class="info-grid spd">
+				<div class="content hero-me">
+					<p>玩家</p>
+				</div>
+				<div class="item-name">
+					速度
+				</div>
+				<div class="content hero-target">
+					<p>对手</p>
+				</div>
+			</div>
+			<div class="info-grid skl">
+				<div class="content hero-me">
+					<p>玩家</p>
+				</div>
+				<div class="item-name">
+					技巧
+				</div>
+				<div class="content hero-target">
+					<p>对手</p>
+				</div>
+			</div>
+		</div>
+		<div class="space-block"></div>
+	</div>
+	<div class="middleblock">
+		<div class="space-block"></div>
+		<div class="battle-log">
+			<div class="title">战斗报告</div>
+			<div class="content">
+			</div>
+		</div>
+		<div class="space-block"></div>
+	</div>
+	<div class="bottomline">
+		<div class="opponent-list">
+		</div>
+		<div class="steins-group">
+			<div class="level player-info">
+				<div class="title">我的等级</div>
+				<div class="content">1</div>
+			</div>
+			<!-- 未投币会不断重置回第一场 -->
+			<div class="battle player-info">
+				<div class="title">战斗场次</div>
+				<div class="content">0</div>
+			</div>
+			<!-- 由战斗生成 -->
+			<!-- <div class="random-number player-info" r-key = "1" r-index = "1">
+				<div class="title">第一行动乱数</div>
+				<div class="content">2B</div>
+			</div> -->
+		</div>
+		<div class="interface">
+			<button id="btn-get-opponents" title="显示一群按钮，都是链上的数据生成的敌人">获取敌人列表</button>
+			<button id="btn-challenge" title="以当前配置挑战擂台!">挑战</button>
+			<button id="btn-continue-challenge" title="以当前配置挑战擂台!">继续挑战</button>
+		</div>
+		<div class="interface">
+			<button id="btn-refresh" title="消耗货币，打乱世界线">随机调整战术</button>
+			<button id="btn-levelup" title="消耗货币，随机永久提升一点属性">升级</button>
+			<button id="btn-upload" title="当你战胜了所有对手，就可以登上英雄链">上传战绩</button>
+		</div>
+		<div class="interface debug">
+			<p>Debug</p>
+			<button id="btn-speedup" title="多一个表演线程">加速</button>
+		</div>
+		<div class="comment">
+			将用于显示特定乱数
+			并有调整可能
+		</div>
+	</div>
+	<script type="text/javascript">
+        var main = new Main();
+
+        $(document).ready(function () {
+            nebApi.getNebState().then((state) => {
+                nebState = state;
+                window.addEventListener('message', (e) => {
+                    if (e.data && e.data.data && e.data.data.account) {
+                        account = e.data.data.account;
+                    	main.init();
+                    }
+                });
+                window.postMessage({
+                    "data": {},
+                    "method": "getAccount",
+                    "target": "contentscript",
+                }, "*");
+            });
+        })
+
+		// $(document).ready(function(){
+		// 	main.init();
+		// });
+		//获取钱包地址后赋值到main.p1_wallet/p2_wallet({name:"",hash:parseInt("0x···")})
+	</script>
 </body>
 </html>
