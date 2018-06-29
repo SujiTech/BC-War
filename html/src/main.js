@@ -43,35 +43,13 @@ Main.prototype.init = function(){
     if(this.has_init)
         return;
     this.has_init = true;
-    var main = this;
-    $("#btn-challenge").click(function(){
-        main.Fight();
-    });
-    $("#btn-get-opponents").click(function(){
-        main.btn_get_opponents();
-    });
-    $(".temp-input input").bind('keypress',function(event){
-            if(event.keyCode == "13"){
-                console.log("功能重做中");
-                //ResetToFirstBattle();Fight();
-            }
-        });
     $("#btn-upload").click(function(event){main.upload_winner(main.battle_times)});
-    //$("#btn-get-opponents").dblclick(dbclk_opponents);
-    Display.Div = $(".battle-log .content");
     //玩家信息来自钱包
     this.p1_wallet.hash = parseInt(this.toASCII(account));
     //初始化完成自动获得一次敌人列表
     this.btn_get_opponents();
     //战斗数据
     this.ResetToFirstBattle()
-    //调试
-    $("#btn-continue-challenge,#btn-refresh,#btn-levelup,#btn-upload").css({
-        visibility:"hidden"
-    })
-    $("#btn-speedup").click(function(){
-        main.display_loop();
-    });
 }
 Main.prototype.rundata = {};
 Main.prototype.Fight = function(){
@@ -173,7 +151,7 @@ Main.prototype.btn_get_opponents = function(){
         name:"刘怪斯",
         hash: 1
     };
-
+    $(".opponent-list").html("<div class=\"title\">正在获取对手列表……</div>");
     nebApi.call({
         chainID: nebState.chain_id,
         from: account,
@@ -225,9 +203,9 @@ Main.prototype.btn_get_opponents = function(){
 
 }
 Main.prototype.list_opponents = function(opponents){
-    $(".opponent-list").html("");
+    $(".opponent-list").html("<div class=\"title\">擂主：</div>");
     for (var i = 0; i < opponents.length; i++) {
-        $(".opponent-list").append(Display.ToElem("div",Display.ToElem("button",opponents[i].name),"item"));
+        $(".opponent-list").append(Display.ToElem("div",Display.ToElem("button",(opponents[i].name||"无名氏")),"item"));
         var fn = function(){
             var obj = i;
             if(i==opponents.length-1)

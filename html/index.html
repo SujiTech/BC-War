@@ -5,6 +5,7 @@
     <!-- <script src="//cdn.jsdelivr.net/npm/phaser@3.0.0/dist/phaser.min.js"></script> -->
 	<link rel="stylesheet" type="text/css" href="css/index.css" />
 	<link rel="stylesheet" type="text/css" href="css/battle-log.css" />
+	<link rel="stylesheet" type="text/css" href="css/buttons.css" />
 	<script src="https://cdn.jsdelivr.net/npm/nebpay.js@0.2.1/dist/nebPay.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/nebulas@0.5.2/dist/nebulas.js"></script>
     <script src="js/jquery-2.0.3.min.js" type="text/javascript"></script>
@@ -13,9 +14,24 @@
     <script src="src/random.js" type="text/javascript"></script>
     <script src="src/battle.js" type="text/javascript"></script>
     <script src="src/todisplay.js" type="text/javascript"></script>
+    <script src="src/ui.js" type="text/javascript"></script>
     <script src="src/main.js" type="text/javascript"></script>
 </head>
 <body>
+	<div class="introduction">
+		<div class="bg">
+			<div class="vessel">
+				<h1 class="noselect">超次元第一武道大会</h1>
+				<p class="noselect">8012年人类早已经达到了物质上的极大丰富，食物、医疗、居住空间都不再困扰人们的生活。</p>
+				<p class="noselect">当然前沿科技的难题也更加艰巨，众多课题中最引人注目的是挑战因果本身。</p>
+				<p class="noselect">随之而来的【超次元第一武道会】正是一项应用因果律研究成果的竞技运动。</p>
+				<p class="noselect">挑战者只要战胜所有对手就能坐上宝座，成为新一任擂主。</p>
+				<p class="noselect">这没有说起来那么容易。挑战需要无数次的尝试，在所有出招方式中找到一种能够战胜所有人的组合。</p>
+				<br class="noselect">
+				<p class="noselect">那么，新的挑战者，Ready！</p>
+			</div>
+		</div>
+	</div>
 	<div class="bg-body">
 		<div style="position: relative;">	
 <!-- 				<div class="bg-top"></div>
@@ -132,6 +148,7 @@
 		<div class="space-block"></div>
 	</div>
 	<div class="bottomline">
+
 		<div class="opponent-list">
 		</div>
 		<div class="steins-group">
@@ -152,7 +169,7 @@
 		</div>
 		<div class="interface">
 			<button id="btn-get-opponents" title="显示一群按钮，都是链上的数据生成的敌人">获取敌人列表</button>
-			<button id="btn-challenge" title="以当前配置挑战擂台!">挑战</button>
+			<button id="btn-challenge" title="以当前配置挑战擂台!" class="button button-large button-plain button-border button-box">挑战</button>
 			<button id="btn-continue-challenge" title="以当前配置挑战擂台!">继续挑战</button>
 		</div>
 		<div class="interface">
@@ -164,14 +181,51 @@
 			<p>Debug</p>
 			<button id="btn-speedup" title="多一个表演线程">加速</button>
 		</div>
+		<div class="interface">
+			<button id="btn-about" title="关于我们的游戏">关于</button>
+		</div>
 		<div class="comment">
 			将用于显示特定乱数
 			并有调整可能
 		</div>
+		<div class=""></div>
+	</div>
+	<div class="init-unfinish">
+		<div class="space-block"></div>
+		<div class="middle-flex">
+			<div class="space-block"></div>
+			<div class="content">数据初始化中，长期没有反应请刷新页面</div>
+			<div class="space-block"></div>
+		</div>
+		<div class="space-block"></div>
+	</div>
+	<div class="more-info">
+		<div class="space-block"></div>
+		<div class="content">
+			本游戏需要星云链钱包的支持,以便将结果上传到链上供其他人挑战。
+			<br>
+			<br>
+			钱包App链接：
+			<a href="https://github.com/ChengOrangeJu/WebExtensionWallet">网页下载</a>/
+			<a href="https://itunes.apple.com/hk/app/nas-nano/id1281191905?l=zh&amp;ls=1&amp;mt=8">苹果钱包下载(海外)</a>/
+			<a href="https://nano.nebulas.io/index_cn.html">安卓钱包下载l</a>
+			<br>
+			<br>
+			<p>小记:</p>
+			<p class="intend">
+				设计这款游戏的初衷就是想要做出一款真正符合区块链精神的游戏，不是像其他傻逼作者明明是来薅羊毛却羞于承认。基于区块链挖矿的特色——每产生一个新区块的产生都源自于对前一个区块的反复挑战，我们把【MD5大作战用加密代码产生属性和行动类型】的特色和【挖矿调整代码反复尝试】结合，制作了这款反复尝试挑战擂主并成为新擂主的【超次元第一武道会】。
+			</p>
+			<br>
+			我们会保持继续更新，敬请期待
+			<br>
+			<br>
+			Present by 白鹿工作室
+		</div>
+		<div class="space-block"></div>
 	</div>
 	<script type="text/javascript">
         var main = new Main();
-
+        UI_init();
         $(document).ready(function () {
             nebApi.getNebState().then((state) => {
                 nebState = state;
