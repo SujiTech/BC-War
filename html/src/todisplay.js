@@ -90,10 +90,13 @@ ToDisplay.prototype.display = function(){
 			break;
 		case eDisplayType.WinChallenge:
 			this.WinChallenge();
+			break;
 		case eDisplayType.LoseSuggerst:
 			this.LoseSuggerst();
+			break;
 		case eDisplayType.WinSuggerst:
 			this.WinSuggerst();
+			break;
 		default:
 			console.log("DisplayType丢失")
 			break;
