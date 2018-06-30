@@ -185,7 +185,7 @@ body{
     border-width: 1px 16px 1px 7px;
     /*border: 0.5rem outset #169ace;*/
     margin: 5px;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 .battle-log .title{
     margin-bottom: 10px;
@@ -195,7 +195,6 @@ body{
 
 }
 .battle-log .content{
-    overflow-y: scroll;
     /*height: calc(100% - 31px);*/
 }
 
