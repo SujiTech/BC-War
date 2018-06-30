@@ -27,6 +27,8 @@ function ToDisplay(source, opponent, display_type, number, hpafter, isCombo, del
 	case eDisplayType.Damage:
 	case eDisplayType.Win:
 	case eDisplayType.WinChallenge:
+	case eDisplayType.LoseSuggerst:
+	case eDisplayType.WinSuggerst:
 		this.next_need_newline = true;
 	default:
 		break;
@@ -46,6 +48,8 @@ function ToDisplay(source, opponent, display_type, number, hpafter, isCombo, del
 	case eDisplayType.Punch:
 	case eDisplayType.PunchCombo:
 	case eDisplayType.WinChallenge:
+	case eDisplayType.LoseSuggerst:	
+	case eDisplayType.WinSuggerst:
 	case eDisplayType.Win:
 	default:
 		break;
@@ -86,6 +90,10 @@ ToDisplay.prototype.display = function(){
 			break;
 		case eDisplayType.WinChallenge:
 			this.WinChallenge();
+		case eDisplayType.LoseSuggerst:
+			this.LoseSuggerst();
+		case eDisplayType.WinSuggerst:
+			this.WinSuggerst();
 		default:
 			console.log("DisplayType丢失")
 			break;
@@ -151,6 +159,15 @@ ToDisplay.prototype.WinChallenge = function(){
 	$("#btn-upload").css({visibility: "visible"})
 	//其他胜利表演
 }
+ToDisplay.prototype.LoseSuggerst = function(){
+	var str =  Display.RS("建议：虽然这一把输了，但多尝试几次不同的打发就有可能胜利哦！");
+	Display.LastP().append(Display.ToSpan(str));
+}
+ToDisplay.prototype.WinSuggerst = function(){
+	var str =  Display.RS("恭喜你新擂主。如果你安装了星云链钱包，可以点击上传成绩。");
+	Display.LastP().append(Display.ToSpan(str));
+}
+
 
 /*目前行动类型
 	Punch
@@ -210,5 +227,7 @@ eDisplayType = {
 	CriticalHit : 7,
 	PunchCombo: 8,
 	WinChallenge : 9,
-	Max : 10,
+	LoseSuggerst : 10,
+	WinSuggerst:11,
+	Max : 12,
 }

@@ -64,8 +64,10 @@ Main.prototype.Fight = function(){
     $(".player-info.battle .content").html(this.battle_times);
     //战斗开始
 
-    if(this.fight_loop(this.p1,this.p2) && this.target_is_last_winner)
+    if(this.fight_loop(this.p1,this.p2) && this.target_is_last_winner){
         new ToDisplay(null, null, eDisplayType.WinChallenge, null, null, null, 500)
+        new ToDisplay(null, null, eDisplayType.WinSuggerst, null, null, null, 500)
+    }
     if(!this.display_looping){
         this.display_looping = true;
         this.display_loop();
@@ -94,6 +96,7 @@ Main.prototype.fight_loop = function(p1,p2){
             console.log("p2获胜")
             new ToDisplay(p1 , null, eDisplayType.Dead);
             new ToDisplay(p2, null, eDisplayType.Win);
+            new ToDisplay(null, null, eDisplayType.LoseSuggerst);
             break;
         }else if(p2.hp==0){
             console.log("p1获胜")
