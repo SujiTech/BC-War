@@ -83,6 +83,10 @@ Main.prototype.fight_loop = function(p1,p2){
 Main.prototype.ResetToFirstBattle = function(){
     //随机数种子
     this.bk_rand = new BkRand(this.p1_wallet.hash, this.p2_wallet.hash);
+    //显示信息
+    this.init_player_info();
+
+    this.resetRunData();
 }
 
 Main.prototype.init_player_info = function (){
@@ -334,10 +338,10 @@ Hero.prototype.getName = function(){
 
 //获取n次战斗中是否有战胜的情况
 Main.prototype.getResult = function(fight_times,hash_p1,hash_p2){
-    this.ResetToFirstBattle();
-    this.battle_times = 0;
     this.p1_wallet.hash = hash_p1;
     this.p2_wallet.hash = hash_p2;
+    this.ResetToFirstBattle();
+    this.battle_times = 0;
     for (var i = 0; i < fight_times; i++) {
         this.init_player_info();
         this.resetRunData();

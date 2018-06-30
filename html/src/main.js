@@ -8,7 +8,7 @@ var nebApi = neb.api;
 var nebPay = new NebPay();
 var nebState = undefined;
 var account = undefined;
-var contractAddress = "n1x3EU7Jj9MJuXaCMFLfAcbhBybFa1f3AzP";
+var contractAddress = "n1hxAD8etdF4Bp2T4cSnmuyLVpT8KQEmhcW";
 
 function Main(){}
 Main.prototype = {
@@ -17,8 +17,6 @@ Main.prototype = {
     has_init : false,
     // p1_wallet : {hash:parseInt("0x3025e28ba5769d139e1395387a488394"),name:"袭金亮"},
     // p2_wallet : {hash:parseInt("0xbed46142792616f09a9120a724fcb64e"),name:"刘怪斯14"},
-    p1_wallet : {hash:parseInt("0x3025e28ba5769d139e1395387a4883941"),name:"鱼香肉丝"},
-    p2_wallet : {hash:parseInt("0xbed46142792616f09a9120a724fcb64e"),name:"宫保鸡丁"},
     target_is_last_winner : false,
     battle_times : 0,
     p1_action_list : [],
@@ -39,6 +37,8 @@ Main.prototype.toASCII = function(str){
    }
    return usernameMi;
 }
+Main.prototype.p1_wallet = {hash:parseInt(Main.prototype.toASCII("n1Yv4HpXN7Jckfnik2r7nbDqKoCpZNjTpCx")),name:"鱼香肉丝"},
+Main.prototype.p2_wallet = {hash:parseInt(Main.prototype.toASCII("n1UaMNYDDV8D6oE77KMHu6uhgKBfAf9i2Z1")),name:"宫保鸡丁"},
 Main.prototype.init = function(){
     if(this.has_init)
         return;
