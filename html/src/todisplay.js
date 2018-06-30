@@ -160,11 +160,11 @@ ToDisplay.prototype.WinChallenge = function(){
 	//其他胜利表演
 }
 ToDisplay.prototype.LoseSuggerst = function(){
-	var str =  Display.RS("建议：虽然这一把输了，但多尝试几次不同的打发就有可能胜利哦！");
+	var str =  Display.RS(["建议：虽然这一把输了，但多尝试几次不同的打发就有可能胜利哦！"]);
 	Display.LastP().append(Display.ToSpan(str));
 }
 ToDisplay.prototype.WinSuggerst = function(){
-	var str =  Display.RS("恭喜你新擂主。如果你安装了星云链钱包，可以点击上传成绩。");
+	var str =  Display.RS(["恭喜你新擂主。如果你安装了星云链钱包，可以点击上传成绩。"]);
 	Display.LastP().append(Display.ToSpan(str));
 }
 
